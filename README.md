@@ -28,8 +28,8 @@
   [https://github.com/yt-dlp/yt-dlp/releases/tag/2026.03.03](https://github.com/yt-dlp/yt-dlp/releases/tag/2026.03.03)
 2. Скачайте `ffmpeg-master-latest-win64-gpl.zip` отсюда:  
   [https://github.com/yt-dlp/FFmpeg-Builds/releases/latest/download/ffmpeg-master-latest-win64-gpl.zip](https://github.com/yt-dlp/FFmpeg-Builds/releases/latest/download/ffmpeg-master-latest-win64-gpl.zip)  
-  Либо чтобы 100% работало (но постарее) - отсюда файл `ffmpeg-N-120064-g3b9dbda49b-win64-gpl.zip`:  
-  [https://github.com/yt-dlp/FFmpeg-Builds/releases/tag/autobuild-2025-07-01-15-38](https://github.com/yt-dlp/FFmpeg-Builds/releases/tag/autobuild-2025-07-01-15-38)
+  Либо чтобы 100% работало (но постарее) - отсюда файл `ffmpeg-N-122609-g364d5dda91-win64-gpl.zip`:  
+  [https://github.com/yt-dlp/FFmpeg-Builds/releases/tag/autobuild-2026-01-31-14-23](https://github.com/yt-dlp/FFmpeg-Builds/releases/tag/autobuild-2026-01-31-14-23)
 
 Теперь скопируйте `yt-dlp.exe` в папку `DYDownFiles` рядом с программой (должна создаться после запуска программы), а из архива `ffmpeg-master-latest-win64-gpl.zip` вытащите из папки `bin` файл `ffmpeg.exe` и положите в `DYDownFiles/ffmpeg`.
 
