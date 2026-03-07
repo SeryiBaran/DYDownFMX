@@ -4,13 +4,15 @@
 
 ![Скриншот](./screenshot.png)
 
-Утилита-обёртка над YT-DLP.
+Утилита-обёртка над YT-DLP. Создано на Delphi 13.0 FMX для Windows 10+.
+
+Последняя версия - [скачать](https://github.com/SeryiBaran/DYDownFMX/releases/latest/download/DYDownFMX.exe)
 
 Перед использованием откройте `Настройки` и нажмите 2 кнопки - для скачивания YT-DLP и FFMPEG соответственно.
 
 Если программа не работает или выдает ошибки, удалите папку `DYDownFiles` и перезапустите программу.
 
-Настройки сохраняются в DYDownFiles/config.json, а история загрузок в DYDownFiles/history.txt
+Настройки сохраняются в DYDownFiles/config.json, а история загрузок в DYDownFiles/history.txt.
 
 ## Если не работают кнопки для установки YT-DLP и FFMPEG
 
