@@ -46,7 +46,7 @@
 
 Программа сделана на Delphi 13 со следующими библиотеками:
 
-- DosCommand
+- [DosCommand](https://github.com/TurboPack/DOSCommand) (доступна в Delphi GetIt)
 
 HTTP(s) клиент украден с StackOverFlow, с Indy не получается без багов (я знал Delphi на практике всего около недельки на момент 2025-07-01T21:44:29+03:00).
 
