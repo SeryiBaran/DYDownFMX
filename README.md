@@ -24,8 +24,8 @@
 
 1. Скачайте `yt-dlp.exe` отсюда:  
   [https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe](https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe)  
-  Либо чтобы 100% работало (но постарее) - отсюда файл `yt-dlp.exe`:  
-  [https://github.com/yt-dlp/yt-dlp/releases/tag/2025.06.30](https://github.com/yt-dlp/yt-dlp/releases/tag/2025.06.30)
+  Либо чтобы 100% работало (но, возможно, постарее) - отсюда файл `yt-dlp.exe`:  
+  [https://github.com/yt-dlp/yt-dlp/releases/tag/2026.03.03](https://github.com/yt-dlp/yt-dlp/releases/tag/2026.03.03)
 2. Скачайте `ffmpeg-master-latest-win64-gpl.zip` отсюда:  
   [https://github.com/yt-dlp/FFmpeg-Builds/releases/latest/download/ffmpeg-master-latest-win64-gpl.zip](https://github.com/yt-dlp/FFmpeg-Builds/releases/latest/download/ffmpeg-master-latest-win64-gpl.zip)  
   Либо чтобы 100% работало (но постарее) - отсюда файл `ffmpeg-N-120064-g3b9dbda49b-win64-gpl.zip`:  
