@@ -22,7 +22,7 @@ function LoadSettingsFromFile(const FileName: string): TSettings;
 
 const
   defaultSettings: TSettings = (bigUi: True; downloadDir: FILE_DIR;
-    videoResolutionIndex: 2; audioBitrateIndex: 4; downloadPlaylist: False; downloadMP3: False;
+    videoResolutionIndex: 2; audioBitrateIndex: 1; downloadPlaylist: False; downloadMP3: False;
     createPlaylistDirs: False; logsAutoScroll: True;);
 
 implementation
