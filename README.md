@@ -31,14 +31,17 @@
   Либо чтобы 100% работало (но постарее) - отсюда файл `ffmpeg-N-122609-g364d5dda91-win64-gpl.zip`:  
   [https://github.com/yt-dlp/FFmpeg-Builds/releases/tag/autobuild-2026-01-31-14-23](https://github.com/yt-dlp/FFmpeg-Builds/releases/tag/autobuild-2026-01-31-14-23)
 
-Теперь скопируйте `yt-dlp.exe` в папку `DYDownFiles` рядом с программой (должна создаться после запуска программы), а из архива `ffmpeg-master-latest-win64-gpl.zip` вытащите из папки `bin` файл `ffmpeg.exe` и положите в `DYDownFiles/ffmpeg`.
+Теперь скопируйте `yt-dlp.exe` в папку `DYDownFiles` рядом с программой (должна создаться после запуска программы), а из архива `ffmpeg-master-latest-win64-gpl.zip` вытащите папку `bin` и положите в `DYDownFiles/ffmpeg`.
 
 Должно получиться такое древо:
 
 ```
 - DYDownFiles
 --- ffmpeg
---- --- ffmpeg.exe
+--- --- bin
+--- --- --- ffmpeg.exe
+--- --- --- ffprobe.exe
+--- --- --- ... и т.д. ...
 --- yt-dlp.exe
 ```
 
