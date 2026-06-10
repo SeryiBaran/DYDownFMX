@@ -152,6 +152,7 @@
         <DCCReference Include="ProjectConstants.pas"/>
         <DCCReference Include="ConfigUnit.pas"/>
         <DCCReference Include="ShellKnownPath.pas"/>
+        <DCCReference Include="fOpen.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -194,6 +195,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="Win32\Debug\DYDownFMX.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>DYDownFMX.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Win32\Release\DYDownFMX.exe" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>DYDownFMX.exe</RemoteName>
                         <Overwrite>true</Overwrite>

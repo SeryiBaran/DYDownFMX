@@ -7,7 +7,8 @@ uses
   SettingsForm in 'SettingsForm.pas' {frmSettings},
   ProjectConstants in 'ProjectConstants.pas',
   ConfigUnit in 'ConfigUnit.pas',
-  ShellKnownPath in 'ShellKnownPath.pas';
+  ShellKnownPath in 'ShellKnownPath.pas',
+  fOpen in 'fOpen.pas';
 
 {$R *.res}
 

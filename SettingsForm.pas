@@ -11,7 +11,7 @@ uses
   Winapi.WinInet, System.Zip, ShellAPI, FMX.Platform.Win, System.IOUtils,
   // Third-party
   // My
-  ProjectConstants;
+  ProjectConstants, fOpen;
 
 type
   TfrmSettings = class(TForm)
@@ -22,10 +22,12 @@ type
     btnOpenDataDir: TButton;
     Image1: TImage;
     ScrollBox1: TScrollBox;
+    repoLink: TLabel;
     procedure btnGetYTDLPClick(Sender: TObject);
     procedure btnGetFFMPEGClick(Sender: TObject);
     procedure btnOpenDataDirClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure repoLinkClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -158,6 +160,11 @@ end;
 procedure TfrmSettings.FormCreate(Sender: TObject);
 begin
   Self.Caption := APP_NAME + ' - Настройки';
+end;
+
+procedure TfrmSettings.repoLinkClick(Sender: TObject);
+begin
+  TMisc.Open(repoLink.Text);
 end;
 
 end.
