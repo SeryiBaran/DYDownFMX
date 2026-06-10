@@ -12,7 +12,7 @@
 
 Если программа не работает или выдает ошибки, удалите папку `DYDownFiles` и перезапустите программу.
 
-Настройки сохраняются в DYDownFiles/config.json, а история загрузок в DYDownFiles/history.txt.
+Настройки сохраняются в `DYDownFiles/config.ini`, а история загрузок в `DYDownFiles/history.csv`. В ранних версиях это были `DYDownFiles/config.json`, и `DYDownFiles/history.txt` соответственно.
 
 Софтина кушает очень мало оперативки. При этом статично - что в фоне, что при работе жрет одинаково.
 
@@ -55,7 +55,6 @@ HTTP(s) клиент украден с StackOverFlow, с Indy не получа�
 
 ### TODO
 
-- Переписать конфиг на TIniFiles
 - Сделать нормальное хранение настроек в коде. Заебало трехслойное сохранение
 - Заюзать полезные фичи и код из моей нычки `E:\files\projects\delphi_projects` (мб progress bar, etc.)
 - [https://docwiki.embarcadero.com/Libraries/Athens/en/System.Net.HttpClient.THTTPClient](https://docwiki.embarcadero.com/Libraries/Athens/en/System.Net.HttpClient.THTTPClient)
