@@ -5,7 +5,7 @@ interface
 uses ConfigUnit;
 
 const
-  APP_VER = '1.3.2';
+  APP_VER = '1.3.3';
   APP_NAME = 'DYDownFMX';
   APP_LBL_TITLE = 'Качалка ' + APP_VER;
   TEMPLATE_PROGRESS =
@@ -15,15 +15,15 @@ const
   FILE_LOGS_DIR = FILE_DIR + '\logs';
   FILE_CONFIG = FILE_DIR + '\config.json';
   FILE_YTDLP = FILE_DIR + '\yt-dlp.exe';
-  FILE_FFMPEG_DIR = FILE_DIR + '\ffmpeg';
-  FILE_FFMPEG = FILE_FFMPEG_DIR + '\ffmpeg.exe';
-  FILE_FFMPEG_DOWNLOADED_INDIR = 'ffmpeg-master-latest-win64-gpl';
+  FFMPEG_DIR = FILE_DIR + '\ffmpeg';
+  FILE_FFMPEG_DIR = FFMPEG_DIR + '\bin';
+  FILE_FFMPEG_DOWNLOADED_INDIR = 'ffmpeg-master-latest-win64-gpl-shared';
   FILE_FFMPEG_DOWNLOADED = FILE_DIR + '\' +
     FILE_FFMPEG_DOWNLOADED_INDIR + '.zip';
   LATEST_YTDLP_DOWNLOAD_URL =
     'https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe';
   LATEST_FFMPEG_DOWNLOAD_URL =
-    'https://github.com/yt-dlp/FFmpeg-Builds/releases/latest/download/ffmpeg-master-latest-win64-gpl.zip';
+    'https://github.com/yt-dlp/FFmpeg-Builds/releases/latest/download/ffmpeg-master-latest-win64-gpl-shared.zip';
   BIG_UI_MUL = 1.25;
   MAX_INSTANCES = 256;
   BASE_MUTEX_NAME = 'DYDownFMX_' + APP_VER + '__Instance_';

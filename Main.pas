@@ -546,10 +546,10 @@ begin
     Exit;
   end;
 
-  if not TFile.Exists(FILE_FFMPEG) then
+  if not TDirectory.Exists(FFMPEG_DIR) then
   begin
-    log('[ERR] Не найден ffmpeg.exe! Откройте меню настройки или вручную скачайте и распакуйте в '
-      + FILE_FFMPEG_DIR);
+    log('[ERR] Не найден ffmpeg! Откройте меню настройки или вручную скачайте и распакуйте в '
+      + FFMPEG_DIR);
     Exit;
   end;
 

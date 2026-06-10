@@ -8,7 +8,7 @@ uses
   System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Controls.Presentation, FMX.StdCtrls, FMX.Layouts, FMX.Objects,
-  Winapi.WinInet, System.Zip, ShellAPI, FMX.Platform.Win,
+  Winapi.WinInet, System.Zip, ShellAPI, FMX.Platform.Win, System.IOUtils,
   // Third-party
   // My
   ProjectConstants;
@@ -36,73 +36,96 @@ implementation
 
 {$R *.fmx}
 
-function Download(URL, User, Pass, FileName: string): Boolean;
+function DownloadFile(const URL, FileName: string): Boolean;
 const
-  BufferSize = 1024;
+  BufferSize = 4096;
 var
   hSession, hURL: HInternet;
-  Buffer: array [1 .. BufferSize] of Byte;
-  BufferLen: DWORD;
-  F: File;
+  Buffer: array of Byte;
+  BytesRead: DWORD;
+  FS: TFileStream;
 begin
   Result := False;
-  hSession := InternetOpen('', INTERNET_OPEN_TYPE_PRECONFIG, nil, nil, 0);
-
-  // Establish the secure connection
-  InternetConnect(hSession, PChar(URL), INTERNET_DEFAULT_HTTPS_PORT,
-    PChar(User), PChar(Pass), INTERNET_SERVICE_HTTP, 0, 0);
-
+  hSession := InternetOpen('Mozilla/5.0', INTERNET_OPEN_TYPE_PRECONFIG, nil, nil, 0);
+  if hSession = nil then Exit;
   try
     hURL := InternetOpenURL(hSession, PChar(URL), nil, 0, 0, 0);
+    if hURL = nil then Exit;
     try
-      AssignFile(F, FileName);
-      Rewrite(F, 1);
+      FS := TFileStream.Create(FileName, fmCreate);
       try
+        SetLength(Buffer, BufferSize);
         repeat
-          InternetReadFile(hURL, @Buffer, SizeOf(Buffer), BufferLen);
-          BlockWrite(F, Buffer, BufferLen)
-        until BufferLen = 0;
-      finally
-        CloseFile(F);
+          InternetReadFile(hURL, @Buffer[0], BufferSize, BytesRead);
+          if BytesRead = 0 then Break;
+          FS.WriteBuffer(Buffer[0], BytesRead);
+        until False;
         Result := True;
+      finally
+        FS.Free;
       end;
     finally
-      InternetCloseHandle(hURL)
-    end
+      InternetCloseHandle(hURL);
+    end;
   finally
-    InternetCloseHandle(hSession)
+    InternetCloseHandle(hSession);
   end;
 end;
 
 procedure TfrmSettings.btnGetFFMPEGClick(Sender: TObject);
 var
-  zipFile: TZipFile;
+  Zip: TZipFile;
+  i: Integer;
+  EntryName, RelPath, FolderPart, TargetFolder: string;
 begin
   if not DirectoryExists(FILE_DIR) then
     CreateDir(FILE_DIR);
-  if not DirectoryExists(FILE_FFMPEG_DIR) then
-    CreateDir(FILE_FFMPEG_DIR);
+
+  if DirectoryExists(FILE_FFMPEG_DIR) then
+    TDirectory.Delete(FILE_FFMPEG_DIR, True);
+  CreateDir(FILE_FFMPEG_DIR);
 
   if FileExists(FILE_FFMPEG_DOWNLOADED) then
     DeleteFile(FILE_FFMPEG_DOWNLOADED);
-  if FileExists(FILE_FFMPEG) then
-    DeleteFile(FILE_FFMPEG);
 
-  if Download(LATEST_FFMPEG_DOWNLOAD_URL, '', '', FILE_FFMPEG_DOWNLOADED) then
-  begin
-    zipFile := TZipFile.Create();
-    zipFile.Open(FILE_FFMPEG_DOWNLOADED, zmRead);
-    zipFile.Extract(FILE_FFMPEG_DOWNLOADED_INDIR + '/bin/ffmpeg.exe',
-      FILE_FFMPEG_DIR, False);
-    zipFile.Free();
-    DeleteFile(FILE_FFMPEG_DOWNLOADED);
-
-    btnGetFFMPEG.Text := 'FFMPEG - вроде завершено';
-  end
-  else
+  if not DownloadFile(LATEST_FFMPEG_DOWNLOAD_URL, FILE_FFMPEG_DOWNLOADED) then
   begin
     btnGetFFMPEG.Text := 'FFMPEG - ќЎ»Ѕ ј «ј√–”« »';
+    Exit;
   end;
+
+  Zip := TZipFile.Create;
+  try
+    Zip.Open(FILE_FFMPEG_DOWNLOADED, zmRead);
+    for i := 0 to Zip.FileCount - 1 do
+    begin
+      EntryName := Zip.FileNames[i];
+      if EntryName.EndsWith('/') then Continue; // пропускаем папки
+
+      var p := Pos('/', EntryName);
+      if p = 0 then Continue; // нет корневой папки Ц такого быть не должно
+      RelPath := Copy(EntryName, p + 1, MaxInt);
+      if RelPath = '' then Continue;
+
+      // ќпредел€ем папку назначени€ (без имени файла)
+      FolderPart := TPath.GetDirectoryName(RelPath);
+      if FolderPart <> '' then
+        FolderPart := StringReplace(FolderPart, '/', '\', [rfReplaceAll]);
+
+      TargetFolder := System.IOUtils.TPath.Combine(FFMPEG_DIR, FolderPart);
+      if not DirectoryExists(TargetFolder) then
+        ForceDirectories(TargetFolder);
+
+      // »звлекаем файл в папку (им€ файла берЄтс€ из архива)
+      Zip.Extract(i, TargetFolder, False);
+    end;
+    Zip.Close;
+  finally
+    Zip.Free;
+  end;
+
+  //DeleteFile(FILE_FFMPEG_DOWNLOADED);
+  btnGetFFMPEG.Text := 'FFMPEG - вроде завершено';
 end;
 
 procedure TfrmSettings.btnGetYTDLPClick(Sender: TObject);
@@ -113,7 +136,7 @@ begin
   if FileExists(FILE_YTDLP) then
     DeleteFile(FILE_YTDLP);
 
-  if Download(LATEST_YTDLP_DOWNLOAD_URL, '', '', FILE_YTDLP) then
+  if DownloadFile(LATEST_YTDLP_DOWNLOAD_URL, FILE_YTDLP) then
   begin
     btnGetYTDLP.Text := 'YT-DLP - вроде завершено';
   end
