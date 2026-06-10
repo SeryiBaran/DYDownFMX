@@ -43,8 +43,6 @@ type
     comboBoxResolution: TComboBox;
     swchPlaylist: TSwitch;
     Label7: TLabel;
-    swchOnlyAudio: TSwitch;
-    Label8: TLabel;
     swchAutoPlstFolders: TSwitch;
     Label9: TLabel;
     btnDownload: TButton;
@@ -70,6 +68,11 @@ type
     Layout8: TLayout;
     swchLogsAutoScroll: TSwitch;
     Label1: TLabel;
+    Layout9: TLayout;
+    comboBoxAudioBitrate: TComboBox;
+    Label2: TLabel;
+    Label8: TLabel;
+    swchOnlyAudio: TSwitch;
     procedure btnSettingsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure swchBigUISwitch(Sender: TObject);
@@ -151,6 +154,7 @@ begin
   settings.bigUi := swchBigUI.IsChecked;
   settings.downloadDir := Trim(edtDownloadDir.Text);
   settings.videoResolutionIndex := comboBoxResolution.ItemIndex;
+  settings.audioBitrateIndex := comboBoxAudioBitrate.ItemIndex;
   settings.downloadPlaylist := swchPlaylist.IsChecked;
   settings.downloadMP3 := swchOnlyAudio.IsChecked;
   settings.createPlaylistDirs := swchAutoPlstFolders.IsChecked;
@@ -163,6 +167,7 @@ begin
   swchBigUI.IsChecked := settings.bigUi;
   edtDownloadDir.Text := settings.downloadDir;
   comboBoxResolution.ItemIndex := settings.videoResolutionIndex;
+  comboBoxAudioBitrate.ItemIndex := settings.audioBitrateIndex;
   swchPlaylist.IsChecked := settings.downloadPlaylist;
   swchOnlyAudio.IsChecked := settings.downloadMP3;
   swchAutoPlstFolders.IsChecked := settings.createPlaylistDirs;
@@ -236,6 +241,7 @@ begin
       'Date' + CSV_DELIMITER +
       'DownloadDir' + CSV_DELIMITER +
       'Resolution' + CSV_DELIMITER +
+      'AudioBitrate' + CSV_DELIMITER +
       'Playlist' + CSV_DELIMITER +
       'MP3' + CSV_DELIMITER +
       'PlaylistDirs' + CSV_DELIMITER +
@@ -244,6 +250,9 @@ begin
 
   for i := Low(videoResolutions) to High(videoResolutions) do
     comboBoxResolution.Items.Add(videoResolutions[i].ToString());
+
+  for i := Low(audioBitrates) to High(audioBitrates) do
+    comboBoxAudioBitrate.Items.Add(audioBitrates[i].ToString());
 
   if FileExists(FILE_CONFIG) then
   begin
@@ -323,12 +332,14 @@ begin
   begin
     mainLayout.Scale.X := BIG_UI_MUL;
     mainLayout.Scale.Y := BIG_UI_MUL;
+    // ScaleForPPI(GetDpiForWindow(Application.Handle) + BIGUI_DPI_ADD);
     frmMain.WindowState := TWindowState.wsMaximized;
   end
   else
   begin
     mainLayout.Scale.X := 1;
     mainLayout.Scale.Y := 1;
+    // ScaleForCurrentDPI();
     frmMain.WindowState := TWindowState.wsNormal;
   end
 end;
@@ -338,6 +349,7 @@ begin
   settings.bigUi := swchBigUI.IsChecked;
   writeConfigFile();
   updBigUI();
+  // do not run in formInit or UpdateFormFromSettings, because when setting .IsChecked - TfrmMain.swchBigUIClick runs automatically O_O
 end;
 
 procedure TfrmMain.swchLogsAutoScrollSwitch(Sender: TObject);
@@ -469,6 +481,7 @@ procedure TfrmMain.downloadNextYTDLP();
 begin
   currentUrlLaunchString := FILE_YTDLP;
   currentUrlLaunchString := currentUrlLaunchString + ' --ignore-errors';
+  // currentUrlLaunchString := currentUrlLaunchString + ' --restrict-filenames';
   if not settings.downloadPlaylist then
     currentUrlLaunchString := currentUrlLaunchString + ' --no-playlist';
   currentUrlLaunchString := currentUrlLaunchString + ' --ffmpeg-location ' +
@@ -476,6 +489,9 @@ begin
   if settings.createPlaylistDirs and settings.downloadPlaylist and
     normalizedUrls[currentUrlProcessingIndex].Contains('list') then
   begin
+    // Temporary
+    // currentUrlPlaylistName := 'playlist' + (currentUrlProcessingIndex + 1).ToString();
+
     CreateDir(settings.downloadDir + '\' + currentUrlPlaylistName);
     currentUrlLaunchString := currentUrlLaunchString + ' --paths home:' + '"' +
       StringReplace(settings.downloadDir, '\', '\\', [rfReplaceAll]) + '\\' +
@@ -493,7 +509,7 @@ begin
     ',ext:mp4:m4a,vcodec:h264"';
   if settings.downloadMP3 then
     currentUrlLaunchString := currentUrlLaunchString +
-      ' -f "bestaudio/best" -x --audio-format mp3 --audio-quality 192';
+      ' -f "bestaudio/best" -x --audio-format mp3 --audio-quality ' + audioBitrates[settings.audioBitrateIndex].ToString() + '';
   if settings.downloadPlaylist then
   begin
     currentUrlLaunchString := currentUrlLaunchString +
@@ -574,6 +590,7 @@ begin
     EscapeCSV(FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now)) + CSV_DELIMITER +
     EscapeCSV(settings.downloadDir) + CSV_DELIMITER +
     EscapeCSV(videoResolutions[settings.videoResolutionIndex].ToString()) + CSV_DELIMITER +
+    EscapeCSV(audioBitrates[settings.audioBitrateIndex].ToString()) + CSV_DELIMITER +
     EscapeCSV(BoolToStr(settings.downloadPlaylist, True)) + CSV_DELIMITER +
     EscapeCSV(BoolToStr(settings.downloadMP3, True)) + CSV_DELIMITER +
     EscapeCSV(BoolToStr(settings.createPlaylistDirs, True)) + CSV_DELIMITER +

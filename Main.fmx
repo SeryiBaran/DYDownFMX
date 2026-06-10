@@ -2,7 +2,7 @@ object frmMain: TfrmMain
   Left = 100
   Top = 100
   Caption = 'DYDownFMX'
-  ClientHeight = 480
+  ClientHeight = 450
   ClientWidth = 768
   Position = Designed
   StyleBook = MaterialOxfordBlueSB
@@ -22573,7 +22573,7 @@ object frmMain: TfrmMain
     Padding.Right = 8.000000000000000000
     Padding.Bottom = 8.000000000000000000
     Size.Width = 768.000000000000000000
-    Size.Height = 480.000000000000000000
+    Size.Height = 450.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
     object S: TScrollBox
@@ -22581,11 +22581,11 @@ object frmMain: TfrmMain
       Position.X = 8.000000000000000000
       Position.Y = 8.000000000000000000
       Size.Width = 361.000000000000000000
-      Size.Height = 464.000000000000000000
+      Size.Height = 434.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
       Viewport.Width = 361.000000000000000000
-      Viewport.Height = 464.000000000000000000
+      Viewport.Height = 434.000000000000000000
       object Layout1: TLayout
         Align = Top
         Size.Width = 361.000000000000000000
@@ -22660,15 +22660,15 @@ object frmMain: TfrmMain
         Align = Client
         Hint = #1055#1086#1083#1077' '#1089' '#1072#1076#1088#1077#1089#1072#1084#1080' '#1074#1080#1076#1077#1086'/'#1087#1083#1077#1081#1083#1080#1089#1090#1086#1074
         Size.Width = 361.000000000000000000
-        Size.Height = 180.000000000000000000
+        Size.Height = 122.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 4
-        Viewport.Width = 357.000000000000000000
-        Viewport.Height = 176.000000000000000000
+        Viewport.Width = 361.000000000000000000
+        Viewport.Height = 122.000000000000000000
       end
       object Layout2: TLayout
         Align = Bottom
-        Position.Y = 287.000000000000000000
+        Position.Y = 229.000000000000000000
         Size.Width = 361.000000000000000000
         Size.Height = 47.000000000000000000
         Size.PlatformDefault = False
@@ -22706,13 +22706,13 @@ object frmMain: TfrmMain
       end
       object Layout3: TLayout
         Align = Bottom
-        Position.Y = 334.000000000000000000
+        Position.Y = 276.000000000000000000
         Size.Width = 361.000000000000000000
         Size.Height = 28.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 5
+        TabOrder = 6
         object comboBoxResolution: TComboBox
-          Position.X = 68.000000000000000000
+          Position.X = 100.000000000000000000
           Position.Y = 3.000000000000000000
           Size.Width = 77.000000000000000000
           Size.Height = 22.000000000000000000
@@ -22720,40 +22720,21 @@ object frmMain: TfrmMain
           TabOrder = 9
         end
         object Label6: TLabel
-          Position.X = -1.000000000000000000
           Position.Y = 6.000000000000000000
-          Size.Width = 61.000000000000000000
-          Size.Height = 17.000000000000000000
+          Size.Width = 90.000000000000000000
+          Size.Height = 16.000000000000000000
           Size.PlatformDefault = False
-          Text = #1050#1072#1095#1077#1089#1090#1074#1086':'
+          Text = #1050#1072#1095#1077#1089#1090#1074#1086' '#1074#1080#1076#1077#1086':'
           TabOrder = 8
-        end
-        object Label8: TLabel
-          Position.X = 216.000000000000000000
-          Position.Y = 3.000000000000000000
-          Size.Width = 80.000000000000000000
-          Size.Height = 22.000000000000000000
-          Size.PlatformDefault = False
-          Text = #1058#1086#1083#1100#1082#1086' '#1072#1091#1076#1080#1086
-          TabOrder = 15
-        end
-        object swchOnlyAudio: TSwitch
-          IsChecked = False
-          Position.X = 164.000000000000000000
-          Position.Y = 3.000000000000000000
-          Size.Width = 44.000000000000000000
-          Size.Height = 22.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 14
         end
       end
       object Layout4: TLayout
         Align = Bottom
-        Position.Y = 362.000000000000000000
+        Position.Y = 332.000000000000000000
         Size.Width = 361.000000000000000000
         Size.Height = 46.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 6
+        TabOrder = 7
         object swchAutoPlstFolders: TSwitch
           IsChecked = False
           Position.Y = 24.000000000000000000
@@ -22763,7 +22744,7 @@ object frmMain: TfrmMain
           TabOrder = 11
         end
         object Label7: TLabel
-          Position.X = 52.000000000000000000
+          Position.X = 50.000000000000000000
           Size.Width = 321.000000000000000000
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
@@ -22771,7 +22752,7 @@ object frmMain: TfrmMain
           TabOrder = 13
         end
         object Label9: TLabel
-          Position.X = 52.000000000000000000
+          Position.X = 50.000000000000000000
           Position.Y = 24.000000000000000000
           Size.Width = 321.000000000000000000
           Size.Height = 22.000000000000000000
@@ -22794,7 +22775,7 @@ object frmMain: TfrmMain
         Size.Width = 361.000000000000000000
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 7
+        TabOrder = 8
         object btnPaste: TButton
           Align = Client
           Size.Width = 281.000000000000000000
@@ -22818,11 +22799,11 @@ object frmMain: TfrmMain
       object Layout6: TLayout
         Align = Bottom
         Margins.Top = 8.000000000000000000
-        Position.Y = 416.000000000000000000
+        Position.Y = 386.000000000000000000
         Size.Width = 361.000000000000000000
         Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 11
+        TabOrder = 12
         object btnCancel: TButton
           Align = Right
           Position.X = 292.000000000000000000
@@ -22866,11 +22847,53 @@ object frmMain: TfrmMain
           end
         end
       end
+      object Layout9: TLayout
+        Align = Bottom
+        Position.Y = 304.000000000000000000
+        Size.Width = 361.000000000000000000
+        Size.Height = 28.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 5
+        object comboBoxAudioBitrate: TComboBox
+          Position.X = 100.000000000000000000
+          Position.Y = 3.000000000000000000
+          Size.Width = 77.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 9
+        end
+        object Label2: TLabel
+          Position.Y = 6.000000000000000000
+          Size.Width = 90.000000000000000000
+          Size.Height = 17.000000000000000000
+          Size.PlatformDefault = False
+          Text = #1050#1072#1095#1077#1089#1090#1074#1086' '#1072#1091#1076#1080#1086':'
+          TabOrder = 8
+        end
+        object Label8: TLabel
+          Position.X = 230.000000000000000000
+          Position.Y = 3.000000000000000000
+          Size.Width = 80.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          Text = #1058#1086#1083#1100#1082#1086' '#1072#1091#1076#1080#1086
+          TabOrder = 15
+        end
+        object swchOnlyAudio: TSwitch
+          IsChecked = False
+          Position.X = 180.000000000000000000
+          Position.Y = 3.000000000000000000
+          Size.Width = 44.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 14
+        end
+      end
     end
     object Layout7: TLayout
       Align = Client
       Size.Width = 383.000000000000000000
-      Size.Height = 464.000000000000000000
+      Size.Height = 434.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
       object memoLogs: TMemo
@@ -22880,11 +22903,11 @@ object frmMain: TfrmMain
         Align = Client
         Hint = #1055#1086#1083#1077' '#1089' '#1074#1099#1074#1086#1076#1086#1084' yt-dlp'
         Size.Width = 383.000000000000000000
-        Size.Height = 412.000000000000000000
+        Size.Height = 382.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 18
-        Viewport.Width = 379.000000000000000000
-        Viewport.Height = 408.000000000000000000
+        Viewport.Width = 383.000000000000000000
+        Viewport.Height = 382.000000000000000000
       end
       object btnSaveLogs: TButton
         Align = Top
@@ -22929,7 +22952,7 @@ object frmMain: TfrmMain
       Position.X = 369.000000000000000000
       Position.Y = 8.000000000000000000
       Size.Width = 8.000000000000000000
-      Size.Height = 464.000000000000000000
+      Size.Height = 434.000000000000000000
       Size.PlatformDefault = False
     end
   end
@@ -22939,7 +22962,7 @@ object frmMain: TfrmMain
     StyledSettings = [FontColor]
     Opacity = 0.150000005960464500
     Position.X = 520.000000000000000000
-    Position.Y = 371.000000000000000000
+    Position.Y = 341.000000000000000000
     Size.Width = 240.000000000000000000
     Size.Height = 109.000000000000000000
     Size.PlatformDefault = False

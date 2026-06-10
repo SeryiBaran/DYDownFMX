@@ -3,13 +3,14 @@ unit ConfigUnit;
 interface
 
 uses
-  System.SysUtils, System.IniFiles;
+  System.SysUtils, System.IniFiles, ProjectConstants;
 
 type
   TSettings = record
     bigUi: Boolean;
     downloadDir: string;
     videoResolutionIndex: Integer;
+    audioBitrateIndex: Integer;
     downloadPlaylist: Boolean;
     downloadMP3: Boolean;
     createPlaylistDirs: Boolean;
@@ -18,6 +19,11 @@ type
 
 procedure SaveSettingsToFile(const Settings: TSettings; const FileName: string);
 function LoadSettingsFromFile(const FileName: string): TSettings;
+
+const
+  defaultSettings: TSettings = (bigUi: True; downloadDir: FILE_DIR;
+    videoResolutionIndex: 2; audioBitrateIndex: 4; downloadPlaylist: False; downloadMP3: False;
+    createPlaylistDirs: False; logsAutoScroll: True;);
 
 implementation
 
@@ -33,6 +39,7 @@ begin
     Ini.WriteBool(SECTION, 'BigUi', Settings.bigUi);
     Ini.WriteString(SECTION, 'DownloadDir', Settings.downloadDir);
     Ini.WriteInteger(SECTION, 'VideoResolutionIndex', Settings.videoResolutionIndex);
+    Ini.WriteInteger(SECTION, 'AudioBitrateIndex', Settings.audioBitrateIndex);
     Ini.WriteBool(SECTION, 'DownloadPlaylist', Settings.downloadPlaylist);
     Ini.WriteBool(SECTION, 'DownloadMP3', Settings.downloadMP3);
     Ini.WriteBool(SECTION, 'CreatePlaylistDirs', Settings.createPlaylistDirs);
@@ -48,13 +55,14 @@ var
 begin
   Ini := TIniFile.Create(FileName);
   try
-    Result.bigUi := Ini.ReadBool(SECTION, 'BigUi', False);
-    Result.downloadDir := Ini.ReadString(SECTION, 'DownloadDir', '');
-    Result.videoResolutionIndex := Ini.ReadInteger(SECTION, 'VideoResolutionIndex', 0);
-    Result.downloadPlaylist := Ini.ReadBool(SECTION, 'DownloadPlaylist', False);
-    Result.downloadMP3 := Ini.ReadBool(SECTION, 'DownloadMP3', False);
-    Result.createPlaylistDirs := Ini.ReadBool(SECTION, 'CreatePlaylistDirs', False);
-    Result.logsAutoScroll := Ini.ReadBool(SECTION, 'LogsAutoScroll', True);
+    Result.bigUi := Ini.ReadBool(SECTION, 'BigUi', defaultSettings.bigUi);
+    Result.downloadDir := Ini.ReadString(SECTION, 'DownloadDir', defaultSettings.downloadDir);
+    Result.videoResolutionIndex := Ini.ReadInteger(SECTION, 'VideoResolutionIndex', defaultSettings.videoResolutionIndex);
+    Result.audioBitrateIndex := Ini.ReadInteger(SECTION, 'AudioBitrateIndex', defaultSettings.audioBitrateIndex);
+    Result.downloadPlaylist := Ini.ReadBool(SECTION, 'DownloadPlaylist', defaultSettings.downloadPlaylist);
+    Result.downloadMP3 := Ini.ReadBool(SECTION, 'DownloadMP3', defaultSettings.downloadMP3);
+    Result.createPlaylistDirs := Ini.ReadBool(SECTION, 'CreatePlaylistDirs', defaultSettings.createPlaylistDirs);
+    Result.logsAutoScroll := Ini.ReadBool(SECTION, 'LogsAutoScroll', defaultSettings.logsAutoScroll);
   finally
     Ini.Free;
   end;

@@ -15,7 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Use shared .dll's ffmpeg build
 
-
 ## 1.3.4
 
 ### Changed
@@ -23,3 +22,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use .ini instead of .json for config
 - Use .csv instead of custom shitty .txt for history
 - Make instance number big and semi-transparent
+
+## 1.3.5
+
+### Added
+
+- Add audio bitrate selector
+
+### Fixed
+
+- Fix bug what default settings are ignored

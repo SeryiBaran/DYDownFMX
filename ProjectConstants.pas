@@ -2,10 +2,8 @@ unit ProjectConstants;
 
 interface
 
-uses ConfigUnit;
-
 const
-  APP_VER = '1.3.4';
+  APP_VER = '1.3.5';
   APP_NAME = 'DYDownFMX';
   APP_LBL_TITLE = 'Качалка ' + APP_VER;
   TEMPLATE_PROGRESS =
@@ -30,9 +28,7 @@ const
   BASE_MUTEX_NAME = 'DYDownFMX_' + APP_VER + '__Instance_';
   videoResolutions: TArray<Integer> = [144, 240, 360, 480, 720, 1080,
     1440, 2160];
-  defaultSettings: TSettings = (bigUi: True; downloadDir: FILE_DIR;
-    videoResolutionIndex: 2; downloadPlaylist: False; downloadMP3: False;
-    createPlaylistDirs: False; logsAutoScroll: True;);
+  audioBitrates: TArray<Integer> = [128, 192, 320];
 
 implementation
 

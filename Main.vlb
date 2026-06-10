@@ -1,7 +1,4 @@
-﻿[Label8]
-Coordinates=430,166,53,58
-
-[edtDownloadDir]
+﻿[edtDownloadDir]
 Coordinates=496,234,106,58
 
 [Label3]
@@ -53,9 +50,6 @@ Visible=True
 [memoLogs]
 Coordinates=493,166,78,58
 
-[swchOnlyAudio]
-Coordinates=581,166,103,58
-
 [memoUrls]
 Coordinates=308,10,73,58
 
@@ -63,7 +57,7 @@ Coordinates=308,10,73,58
 Coordinates=367,166,53,58
 
 []
-Coordinates=657,56,91,36
+Coordinates=581,166,103,58
 
 [S]
 Coordinates=10,302,76,36
