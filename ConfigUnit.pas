@@ -2,7 +2,8 @@ unit ConfigUnit;
 
 interface
 
-uses System.JSON, System.IOUtils, System.SysUtils;
+uses
+  System.SysUtils, System.IniFiles;
 
 type
   TSettings = record
@@ -15,74 +16,47 @@ type
     logsAutoScroll: Boolean;
   end;
 
-function SettingsToJSON(const settingsProp: TSettings): TJSONObject;
-procedure SaveSettingsToFile(const Person: TSettings; const FileName: string);
-function JSONToSettings(JSON: TJSONObject): TSettings;
+procedure SaveSettingsToFile(const Settings: TSettings; const FileName: string);
 function LoadSettingsFromFile(const FileName: string): TSettings;
 
 implementation
 
-function SettingsToJSON(const settingsProp: TSettings): TJSONObject;
-begin
-  Result := TJSONObject.Create;
-  try
-    Result.AddPair('bigUi', TJSONBool.Create(settingsProp.bigUi));
-    Result.AddPair('downloadDir', settingsProp.downloadDir);
-    Result.AddPair('videoResolutionIndex',
-      TJSONNumber.Create(settingsProp.videoResolutionIndex));
-    Result.AddPair('downloadPlaylist',
-      TJSONBool.Create(settingsProp.downloadPlaylist));
-    Result.AddPair('downloadMP3', TJSONBool.Create(settingsProp.downloadMP3));
-    Result.AddPair('createPlaylistDirs',
-      TJSONBool.Create(settingsProp.createPlaylistDirs));
-    Result.AddPair('logsAutoScroll',
-      TJSONBool.Create(settingsProp.logsAutoScroll));
-  except
-    Result.Free;
-    raise;
-  end;
-end;
+const
+  SECTION = 'Settings';
 
-procedure SaveSettingsToFile(const Person: TSettings; const FileName: string);
+procedure SaveSettingsToFile(const Settings: TSettings; const FileName: string);
 var
-  JSONObj: TJSONObject;
-  JSONString: string;
+  Ini: TIniFile;
 begin
-  JSONObj := SettingsToJSON(Person);
+  Ini := TIniFile.Create(FileName);
   try
-    JSONString := JSONObj.Format; // Formats with indentation
-    TFile.WriteAllText(FileName, JSONString, TEncoding.UTF8);
+    Ini.WriteBool(SECTION, 'BigUi', Settings.bigUi);
+    Ini.WriteString(SECTION, 'DownloadDir', Settings.downloadDir);
+    Ini.WriteInteger(SECTION, 'VideoResolutionIndex', Settings.videoResolutionIndex);
+    Ini.WriteBool(SECTION, 'DownloadPlaylist', Settings.downloadPlaylist);
+    Ini.WriteBool(SECTION, 'DownloadMP3', Settings.downloadMP3);
+    Ini.WriteBool(SECTION, 'CreatePlaylistDirs', Settings.createPlaylistDirs);
+    Ini.WriteBool(SECTION, 'LogsAutoScroll', Settings.logsAutoScroll);
   finally
-    JSONObj.Free;
+    Ini.Free;
   end;
-end;
-
-function JSONToSettings(JSON: TJSONObject): TSettings;
-begin
-  Result.bigUi := (JSON.GetValue<TJSONBool>('bigUi')).AsBoolean;
-  Result.downloadDir := JSON.GetValue<string>('downloadDir');
-  Result.videoResolutionIndex :=
-    (JSON.GetValue<TJSONNumber>('videoResolutionIndex')).AsInt;
-  Result.downloadPlaylist := (JSON.GetValue<TJSONBool>('downloadPlaylist'))
-    .AsBoolean;
-  Result.downloadMP3 := (JSON.GetValue<TJSONBool>('downloadMP3')).AsBoolean;
-  Result.createPlaylistDirs := (JSON.GetValue<TJSONBool>('createPlaylistDirs'))
-    .AsBoolean;
-  Result.logsAutoScroll := (JSON.GetValue<TJSONBool>('logsAutoScroll'))
-    .AsBoolean;
 end;
 
 function LoadSettingsFromFile(const FileName: string): TSettings;
 var
-  JSONString: string;
-  JSONObj: TJSONObject;
+  Ini: TIniFile;
 begin
-  JSONString := TFile.ReadAllText(FileName, TEncoding.UTF8);
-  JSONObj := TJSONObject.ParseJSONValue(JSONString) as TJSONObject;
+  Ini := TIniFile.Create(FileName);
   try
-    Result := JSONToSettings(JSONObj);
+    Result.bigUi := Ini.ReadBool(SECTION, 'BigUi', False);
+    Result.downloadDir := Ini.ReadString(SECTION, 'DownloadDir', '');
+    Result.videoResolutionIndex := Ini.ReadInteger(SECTION, 'VideoResolutionIndex', 0);
+    Result.downloadPlaylist := Ini.ReadBool(SECTION, 'DownloadPlaylist', False);
+    Result.downloadMP3 := Ini.ReadBool(SECTION, 'DownloadMP3', False);
+    Result.createPlaylistDirs := Ini.ReadBool(SECTION, 'CreatePlaylistDirs', False);
+    Result.logsAutoScroll := Ini.ReadBool(SECTION, 'LogsAutoScroll', True);
   finally
-    JSONObj.Free;
+    Ini.Free;
   end;
 end;
 

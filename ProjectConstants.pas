@@ -5,7 +5,7 @@ interface
 uses ConfigUnit;
 
 const
-  APP_VER = '1.3.3';
+  APP_VER = '1.3.4';
   APP_NAME = 'DYDownFMX';
   APP_LBL_TITLE = 'Качалка ' + APP_VER;
   TEMPLATE_PROGRESS =
@@ -13,7 +13,7 @@ const
   FILE_DIR = '.\DYDownFiles';
   FILE_HISTORY = FILE_DIR + '\history.txt';
   FILE_LOGS_DIR = FILE_DIR + '\logs';
-  FILE_CONFIG = FILE_DIR + '\config.json';
+  FILE_CONFIG = FILE_DIR + '\config.ini';
   FILE_YTDLP = FILE_DIR + '\yt-dlp.exe';
   FFMPEG_DIR = FILE_DIR + '\ffmpeg';
   FILE_FFMPEG_DIR = FFMPEG_DIR + '\bin';
