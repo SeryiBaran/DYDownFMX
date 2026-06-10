@@ -153,6 +153,7 @@
         <DCCReference Include="ConfigUnit.pas"/>
         <DCCReference Include="ShellKnownPath.pas"/>
         <DCCReference Include="fOpen.pas"/>
+        <DCCReference Include="Utils.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

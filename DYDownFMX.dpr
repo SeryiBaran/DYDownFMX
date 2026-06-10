@@ -8,7 +8,8 @@ uses
   ProjectConstants in 'ProjectConstants.pas',
   ConfigUnit in 'ConfigUnit.pas',
   ShellKnownPath in 'ShellKnownPath.pas',
-  fOpen in 'fOpen.pas';
+  fOpen in 'fOpen.pas',
+  Utils in 'Utils.pas';
 
 {$R *.res}
 

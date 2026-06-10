@@ -29,6 +29,7 @@ const
   videoResolutions: TArray<Integer> = [144, 240, 360, 480, 720, 1080,
     1440, 2160];
   audioBitrates: TArray<Integer> = [128, 192, 320];
+  ERROR_URL_NUMBER_REGEX: string = '^#URL::(\d+)::';
 
 implementation
 

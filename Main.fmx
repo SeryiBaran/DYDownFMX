@@ -22799,22 +22799,52 @@ object frmMain: TfrmMain
           TabOrder = 16
           Text = #1057#1082#1072#1095#1072#1090#1100
           OnClick = btnDownloadClick
+          object indicator2: TRectangle
+            Fill.Color = claDarkred
+            HitTest = False
+            Position.X = 26.000000000000000000
+            Position.Y = 4.000000000000000000
+            Size.Width = 86.000000000000000000
+            Size.Height = 38.000000000000000000
+            Size.PlatformDefault = False
+            Visible = False
+            object lblErrorsUrls: TLabel
+              Align = Client
+              Margins.Left = 16.000000000000000000
+              Size.Width = 70.000000000000000000
+              Size.Height = 22.000000000000000000
+              Size.PlatformDefault = False
+              Text = '48 '#1080#1079' 435'
+              TabOrder = 0
+            end
+            object Label10: TLabel
+              Align = Top
+              AutoSize = True
+              Margins.Left = 18.000000000000000000
+              Position.X = 18.000000000000000000
+              Size.Width = 68.000000000000000000
+              Size.Height = 16.000000000000000000
+              Size.PlatformDefault = False
+              Text = #1059' '#1072#1076#1088#1077#1089#1086#1074':'
+              TabOrder = 1
+            end
+          end
           object indicator: TCircle
             Fill.Color = claGreen
             Hint = #1048#1085#1076#1080#1082#1072#1094#1080#1103' '#1085#1072#1083#1080#1095#1080#1103' '#1086#1096#1080#1073#1086#1082
             HitTest = False
-            Position.X = 8.000000000000000000
-            Position.Y = 8.000000000000000000
-            Size.Width = 32.000000000000000000
-            Size.Height = 32.000000000000000000
+            Position.X = 4.000000000000000000
+            Position.Y = 4.000000000000000000
+            Size.Width = 38.000000000000000000
+            Size.Height = 38.000000000000000000
             Size.PlatformDefault = False
             Visible = False
             object lblErrorsNumber: TLabel
               Align = Client
               StyledSettings = [Family, Style, FontColor]
               Hint = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1086#1096#1080#1073#1086#1082
-              Size.Width = 32.000000000000000000
-              Size.Height = 32.000000000000000000
+              Size.Width = 38.000000000000000000
+              Size.Height = 38.000000000000000000
               Size.PlatformDefault = False
               TextSettings.Font.Size = 20.000000000000000000
               TextSettings.HorzAlign = Center

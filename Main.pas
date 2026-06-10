@@ -9,11 +9,11 @@ uses
   FMX.Dialogs, FMX.Layouts, FMX.Controls.Presentation, FMX.StdCtrls,
   FMX.Memo.Types, FMX.ScrollBox, FMX.Memo, FMX.Edit, FMX.ListBox, FMX.Styles,
   Winapi.Windows, Winapi.Messages, Vcl.Dialogs, System.IOUtils, DateUtils,
-  System.Rtti, FMX.Platform, FMX.Surfaces, FMX.Objects,
+  System.Rtti, FMX.Platform, FMX.Surfaces, FMX.Objects, System.RegularExpressions, System.Generics.Collections,
   // Third-party
   DosCommand,
   // My
-  ProjectConstants, ConfigUnit, ShellKnownPath, SettingsForm;
+  ProjectConstants, ConfigUnit, ShellKnownPath, SettingsForm, Utils;
 
 type
   TYTProgress = record
@@ -73,6 +73,9 @@ type
     Label2: TLabel;
     Label8: TLabel;
     swchOnlyAudio: TSwitch;
+    indicator2: TRectangle;
+    lblErrorsUrls: TLabel;
+    Label10: TLabel;
     procedure btnSettingsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure swchBigUISwitch(Sender: TObject);
@@ -123,6 +126,7 @@ var
   settings: TSettings;
   lastLogTime: TTime;
   logsBuffer: TArray<string>;
+  errorsUrlsNums: TArray<Integer>;
 
 implementation
 
@@ -429,6 +433,9 @@ begin
   if Length(downloadErrors) > 0 then
   begin
     indicator.fill.Color := TAlphaColors.Red;
+
+    indicator2.Visible := True;
+    lblErrorsUrls.Text := Length(errorsUrlsNums).ToString() + ' из ' + Length(normalizedUrls).ToString();
   end
   else
   begin
@@ -441,17 +448,34 @@ end;
 procedure TfrmMain.downloadFinished();
 var
   i: Integer;
+  currentErrorURLNumber: Integer;
+  R: TRegEx;
 begin
   log('[INFO] СКАЧИВАНИЕ ЗАВЕРШЕНО');
 
   if Length(downloadErrors) > 0 then
   begin
-    log('[INFO] ВО ВРЕМЯ СКАЧИВАНИЯ ПРОИЗОШЛИ ОШИБКИ:');
+    log('[ERROR] ВО ВРЕМЯ СКАЧИВАНИЯ ПРОИЗОШЛИ ОШИБКИ:');
+
+    R := TRegEx.Create(ERROR_URL_NUMBER_REGEX);
+
     for i := Low(downloadErrors) to High(downloadErrors) do
     begin
       log(downloadErrors[i]);
+
+      if not R.IsMatch(downloadErrors[i]) then
+        Continue;
+
+      currentErrorURLNumber := R.Match(downloadErrors[i]).Groups.Item[1].Value.ToInteger();
+      if not TArray.Contains(errorsUrlsNums, currentErrorURLNumber) then
+      begin
+        SetLength(errorsUrlsNums, Length(errorsUrlsNums) + 1);
+        errorsUrlsNums[High(errorsUrlsNums)] := currentErrorURLNumber;
+      end;
+
     end;
-    log('[INFO] АХТУНГ!!! СКАЧИВАНИЕ ЗАВЕРШЕНО С ОШИБКАМИ');
+
+    log('[ERROR] АХТУНГ!!! Скачивание завершено с ошибками у ' + Length(errorsUrlsNums).ToString() + ' из ' + Length(normalizedUrls).ToString() + ' адресов');
   end;
 
   btnDownload.Enabled := True;
@@ -533,6 +557,8 @@ procedure TfrmMain.resetDownload();
 begin
   normalizedUrls := [];
   downloadErrors := [];
+  errorsUrlsNums := [];
+  indicator2.Visible := False;
   updateIndicator();
   currentUrlProcessingIndex := 0;
 end;
@@ -625,7 +651,7 @@ begin
     ANewLine.Contains('ERR') then
   begin
     SetLength(downloadErrors, Length(downloadErrors) + 1);
-    downloadErrors[High(downloadErrors)] := ANewLine;
+    downloadErrors[High(downloadErrors)] := '#URL::' + (currentUrlProcessingIndex + 1).ToString() + '::' + ANewLine;
   end;
 end;
 
