@@ -6,7 +6,7 @@
 
 Утилита-обёртка над YT-DLP. Создано на Delphi 13.0 FMX для Windows 10+.
 
-Последняя версия - [скачать (11 815.5 KiB)](https://github.com/SeryiBaran/DYDownFMX/releases/latest/download/DYDownFMX.exe)
+Последняя версия - [скачать (11 756 KiB)](https://github.com/SeryiBaran/DYDownFMX/releases/latest/download/DYDownFMX.exe)
 
 Перед использованием откройте `Настройки` и нажмите 2 кнопки - для скачивания YT-DLP и FFMPEG соответственно.
 
