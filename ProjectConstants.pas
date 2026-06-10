@@ -11,7 +11,8 @@ const
   TEMPLATE_PROGRESS =
     '[yt-dlp] | %(progress.downloaded_bytes)s | %(progress.total_bytes)s | %(progress.speed)s | %(progress.eta)s | %(progress._eta_str)s';
   FILE_DIR = '.\DYDownFiles';
-  FILE_HISTORY = FILE_DIR + '\history.txt';
+  FILE_HISTORY = FILE_DIR + '\history.csv';
+  CSV_DELIMITER = ';';
   FILE_LOGS_DIR = FILE_DIR + '\logs';
   FILE_CONFIG = FILE_DIR + '\config.ini';
   FILE_YTDLP = FILE_DIR + '\yt-dlp.exe';

@@ -125,6 +125,16 @@ implementation
 
 {$R *.fmx}
 
+{ Helper: экранирование поля для CSV }
+function EscapeCSV(const Value: string): string;
+begin
+  if (Pos(CSV_DELIMITER, Value) > 0) or (Pos('"', Value) > 0) or
+     (Pos(#13, Value) > 0) or (Pos(#10, Value) > 0) then
+    Result := '"' + StringReplace(Value, '"', '""', [rfReplaceAll]) + '"'
+  else
+    Result := Value;
+end;
+
 procedure TfrmMain.readConfigFile();
 begin
   settings := LoadSettingsFromFile(FILE_CONFIG);
@@ -178,22 +188,18 @@ begin
   for instancesI := 1 to MAX_INSTANCES do
   begin
     mutexName := BASE_MUTEX_NAME + IntToStr(instancesI);
-    // Пытаемся создать мьютекс. Если он уже существует, CreateMutex вернёт его дескриптор,
-    // а GetLastError будет равен ERROR_ALREADY_EXISTS.
     FInstanceMutexHandle := CreateMutex(nil, False, PChar(mutexName));
     if FInstanceMutexHandle = 0 then
-      RaiseLastOSError; // Непредвиденная ошибка при создании
+      RaiseLastOSError;
 
     if GetLastError = ERROR_ALREADY_EXISTS then
     begin
-      // Номер занят – закрываем полученный дескриптор и пробуем следующий
       CloseHandle(FInstanceMutexHandle);
       FInstanceMutexHandle := 0;
       Continue;
     end
     else
     begin
-      // Успешно создали новый мьютекс – этот номер наш
       FInstanceNumber := instancesI;
       Break;
     end;
@@ -201,7 +207,6 @@ begin
 
   if FInstanceNumber = 0 then
   begin
-    // Свободных номеров нет – показываем сообщение и завершаем работу
     ShowMessage('Достигнуто максимальное количество запущенных экземпляров (' +
       IntToStr(MAX_INSTANCES) + ').');
     Application.Terminate;
@@ -223,6 +228,20 @@ begin
 
   if not DirectoryExists(FILE_DIR) then
     CreateDir(FILE_DIR);
+
+  // --- СОЗДАНИЕ CSV-ФАЙЛА ИСТОРИИ С ЗАГОЛОВКАМИ (если отсутствует) ---
+  if not FileExists(FILE_HISTORY) then
+  begin
+    TFile.WriteAllText(FILE_HISTORY,
+      'Date' + CSV_DELIMITER +
+      'DownloadDir' + CSV_DELIMITER +
+      'Resolution' + CSV_DELIMITER +
+      'Playlist' + CSV_DELIMITER +
+      'MP3' + CSV_DELIMITER +
+      'PlaylistDirs' + CSV_DELIMITER +
+      'Urls' + sLineBreak);
+  end;
+
   for i := Low(videoResolutions) to High(videoResolutions) do
     comboBoxResolution.Items.Add(videoResolutions[i].ToString());
 
@@ -304,14 +323,12 @@ begin
   begin
     mainLayout.Scale.X := BIG_UI_MUL;
     mainLayout.Scale.Y := BIG_UI_MUL;
-    // ScaleForPPI(GetDpiForWindow(Application.Handle) + BIGUI_DPI_ADD);
     frmMain.WindowState := TWindowState.wsMaximized;
   end
   else
   begin
     mainLayout.Scale.X := 1;
     mainLayout.Scale.Y := 1;
-    // ScaleForCurrentDPI();
     frmMain.WindowState := TWindowState.wsNormal;
   end
 end;
@@ -321,7 +338,6 @@ begin
   settings.bigUi := swchBigUI.IsChecked;
   writeConfigFile();
   updBigUI();
-  // do not run in formInit or UpdateFormFromSettings, because when setting .IsChecked - TfrmMain.swchBigUIClick runs automatically O_O
 end;
 
 procedure TfrmMain.swchLogsAutoScrollSwitch(Sender: TObject);
@@ -331,7 +347,6 @@ begin
 end;
 
 procedure TfrmMain.btnPasteClick(Sender: TObject);
-
 var
   Svc: IFMXClipboardService;
   Value: TValue;
@@ -350,7 +365,6 @@ begin
   end;
 
   memoUrls.Lines.Add('');
-
   memoUrls.ScrollTo(0, memoUrls.ContentSize.Size.cy);
 end;
 
@@ -362,7 +376,6 @@ begin
     CreateDir(FILE_LOGS_DIR);
 
   logsFileName := Date.Now().ToISO8601(False).Replace(':', '_') + '.txt';
-
   TFile.AppendAllText(FILE_LOGS_DIR + '\' + logsFileName,
     memoLogs.Text + String.Join(sLineBreak, logsBuffer));
 end;
@@ -430,7 +443,6 @@ begin
   end;
 
   btnDownload.Enabled := True;
-
   updateIndicator();
 end;
 
@@ -457,7 +469,6 @@ procedure TfrmMain.downloadNextYTDLP();
 begin
   currentUrlLaunchString := FILE_YTDLP;
   currentUrlLaunchString := currentUrlLaunchString + ' --ignore-errors';
-  // currentUrlLaunchString := currentUrlLaunchString + ' --restrict-filenames';
   if not settings.downloadPlaylist then
     currentUrlLaunchString := currentUrlLaunchString + ' --no-playlist';
   currentUrlLaunchString := currentUrlLaunchString + ' --ffmpeg-location ' +
@@ -465,9 +476,6 @@ begin
   if settings.createPlaylistDirs and settings.downloadPlaylist and
     normalizedUrls[currentUrlProcessingIndex].Contains('list') then
   begin
-    // Temporary
-    // currentUrlPlaylistName := 'playlist' + (currentUrlProcessingIndex + 1).ToString();
-
     CreateDir(settings.downloadDir + '\' + currentUrlPlaylistName);
     currentUrlLaunchString := currentUrlLaunchString + ' --paths home:' + '"' +
       StringReplace(settings.downloadDir, '\', '\\', [rfReplaceAll]) + '\\' +
@@ -520,13 +528,13 @@ end;
 
 procedure TfrmMain.btnDownloadClick(Sender: TObject);
 var
-  newHistoryEntry: string;
+  csvLine: string;
+  urlsConcat: string;
 begin
   log(Format('[INFO] СТАРТ ЗАГРУЗКИ %s', [Date.Now().ToISO8601(False)]));
 
   updateSettingsFromForm();
 
-  // Check if edit box is empty
   if memoUrls.Lines.Text.Trim().IsEmpty() then
   begin
     log('[ERR] ВВЕДИТЕ АДРЕС(А)!');
@@ -560,18 +568,18 @@ begin
 
   normalizedUrls := GetNormalizedURLs(memoUrls.Text);
 
-  newHistoryEntry := sLineBreak + sLineBreak + ';;;START HISTORY_V_' + APP_VER +
-    ';' + sLineBreak + '#DATE ' + TDateTime.Now().ToISO8601(False) + ';' +
-    sLineBreak + '#DIR ' + settings.downloadDir + ';' + sLineBreak +
-    '#RESOLUTION ' + videoResolutions[settings.videoResolutionIndex].ToString()
-    + ';' + sLineBreak + '#PLAYLIST ' + BoolToStr(settings.downloadPlaylist,
-    True) + ';' + sLineBreak + '#MP3 ' + BoolToStr(settings.downloadMP3, True) +
-    ';' + sLineBreak + '#PLAYLIST_DIRS ' +
-    BoolToStr(settings.createPlaylistDirs, True) + ';' + sLineBreak + 'URLS:' +
-    sLineBreak + String.Join(sLineBreak, normalizedUrls) + sLineBreak + ';;;END'
-    + sLineBreak;
+  // --- ЗАПИСЬ ИСТОРИИ В CSV (вместо старого текстового формата) ---
+  urlsConcat := String.Join('|', normalizedUrls);
+  csvLine :=
+    EscapeCSV(FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now)) + CSV_DELIMITER +
+    EscapeCSV(settings.downloadDir) + CSV_DELIMITER +
+    EscapeCSV(videoResolutions[settings.videoResolutionIndex].ToString()) + CSV_DELIMITER +
+    EscapeCSV(BoolToStr(settings.downloadPlaylist, True)) + CSV_DELIMITER +
+    EscapeCSV(BoolToStr(settings.downloadMP3, True)) + CSV_DELIMITER +
+    EscapeCSV(BoolToStr(settings.createPlaylistDirs, True)) + CSV_DELIMITER +
+    EscapeCSV(urlsConcat);
 
-  TFile.AppendAllText(FILE_HISTORY, newHistoryEntry);
+  TFile.AppendAllText(FILE_HISTORY, csvLine + sLineBreak);
 
   currentUrlProcessingIndex := Low(normalizedUrls);
   downloadNext();
@@ -602,11 +610,6 @@ begin
     SetLength(downloadErrors, Length(downloadErrors) + 1);
     downloadErrors[High(downloadErrors)] := ANewLine;
   end;
-
-  // if Length(memoLogs.Lines.ToStringArray()) >= 3000 then
-  // begin
-  // memoLogs.Lines.Delete(0);
-  // end;
 end;
 
 procedure TfrmMain.dscmndYTDLTerminated(Sender: TObject);
