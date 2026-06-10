@@ -9,13 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Здесь будет CHANGELOG.
 
-## 1.3.3
+## 1.3.3 - 2026-06-10
 
 ### Changed
 
 - Use shared .dll's ffmpeg build
 
-## 1.3.4
+## 1.3.4 - 2026-06-10
 
 ### Changed
 
@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use .csv instead of custom shitty .txt for history
 - Make instance number big and semi-transparent
 
-## 1.3.5
+## 1.3.5 - 2026-06-10
 
 ### Added
 
@@ -31,4 +31,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fix bug what default settings are ignored
+- Fix bug what default settings were ignored
+
+## 1.3.6 - 2026-06-10
+
+### Added
+
+- URLs with errors counter
+- repository link in settings window
