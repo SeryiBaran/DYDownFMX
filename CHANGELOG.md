@@ -14,3 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Use shared .dll's ffmpeg build
+
+
+## 1.3.4
+
+### Changed
+
+- Use .ini instead of .json for config
+- Use .csv instead of custom shitty .txt for history
