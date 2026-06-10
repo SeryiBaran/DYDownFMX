@@ -22,3 +22,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Use .ini instead of .json for config
 - Use .csv instead of custom shitty .txt for history
+- Make instance number big and semi-transparent

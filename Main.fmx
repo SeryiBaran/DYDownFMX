@@ -22934,10 +22934,19 @@ object frmMain: TfrmMain
     end
   end
   object lblInstanceNumber: TLabel
-    Size.Width = 141.000000000000000000
-    Size.Height = 17.000000000000000000
+    Anchors = [akRight, akBottom]
+    AutoSize = True
+    StyledSettings = [FontColor]
+    Opacity = 0.150000005960464500
+    Position.X = 520.000000000000000000
+    Position.Y = 371.000000000000000000
+    Size.Width = 240.000000000000000000
+    Size.Height = 109.000000000000000000
     Size.PlatformDefault = False
-    Text = 'lblInstanceNumber'
+    TextSettings.Font.Family = 'Courier New'
+    TextSettings.Font.Size = 96.000000000000000000
+    TextSettings.HorzAlign = Trailing
+    Text = '#001'
     TabOrder = 6
   end
   object tmrMemoLogsFlush: TTimer

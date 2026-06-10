@@ -26,7 +26,7 @@ const
   LATEST_FFMPEG_DOWNLOAD_URL =
     'https://github.com/yt-dlp/FFmpeg-Builds/releases/latest/download/ffmpeg-master-latest-win64-gpl-shared.zip';
   BIG_UI_MUL = 1.25;
-  MAX_INSTANCES = 256;
+  MAX_INSTANCES = 128;
   BASE_MUTEX_NAME = 'DYDownFMX_' + APP_VER + '__Instance_';
   videoResolutions: TArray<Integer> = [144, 240, 360, 480, 720, 1080,
     1440, 2160];

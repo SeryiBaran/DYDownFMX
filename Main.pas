@@ -215,7 +215,7 @@ begin
 
   TStyleManager.SetStyle(MaterialOxfordBlueSB.Style);
 
-  lblInstanceNumber.Text := 'Инстанция #' + IntToStr(FInstanceNumber);
+  lblInstanceNumber.Text := '#' + IntToStr(FInstanceNumber);
   frmMain.Caption := APP_NAME + ' - Инстанция #' + IntToStr(FInstanceNumber);
   lblTitle.Text := APP_LBL_TITLE;
   lblSwchBigUI.Text := 'UI x' + BIG_UI_MUL.ToString();
