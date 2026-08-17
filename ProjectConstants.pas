@@ -3,13 +3,13 @@ unit ProjectConstants;
 interface
 
 const
-  APP_VER = '1.3.6';
+  APP_VER = '1.3.7';
   APP_NAME = 'DYDownFMX';
   APP_LBL_TITLE = 'Качалка ' + APP_VER;
   TEMPLATE_PROGRESS =
     '[yt-dlp] | %(progress.downloaded_bytes)s | %(progress.total_bytes)s | %(progress.speed)s | %(progress.eta)s | %(progress._eta_str)s';
   FILE_DIR = '.\DYDownFiles';
-  FILE_HISTORY = FILE_DIR + '\history.csv';
+  FILE_HISTORY = FILE_DIR + '\history__'+APP_VER+'.csv';
   CSV_DELIMITER = ';';
   FILE_LOGS_DIR = FILE_DIR + '\logs';
   FILE_CONFIG = FILE_DIR + '\config.ini';
@@ -30,6 +30,7 @@ const
     1440, 2160];
   audioBitrates: TArray<Integer> = [128, 192, 320];
   ERROR_URL_NUMBER_REGEX: string = '^#URL::(\d+)::';
+  DEFAULT_LOCALE = 'ru';
 
 implementation
 

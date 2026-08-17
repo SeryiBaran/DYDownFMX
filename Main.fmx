@@ -22704,6 +22704,24 @@ object frmMain: TfrmMain
           Text = #1050#1072#1095#1077#1089#1090#1074#1086' '#1074#1080#1076#1077#1086':'
           TabOrder = 8
         end
+        object swchDownloadLOCALAUDIO: TSwitch
+          IsChecked = False
+          Position.X = 180.000000000000000000
+          Position.Y = 3.000000000000000000
+          Size.Width = 44.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 14
+        end
+        object lblDownloadLOCALAUDIO: TLabel
+          Position.X = 230.000000000000000000
+          Position.Y = 3.000000000000000000
+          Size.Width = 80.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          Text = '__LOCALE__'
+          TabOrder = 15
+        end
       end
       object Layout4: TLayout
         Align = Bottom

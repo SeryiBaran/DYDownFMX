@@ -76,6 +76,8 @@ type
     indicator2: TRectangle;
     lblErrorsUrls: TLabel;
     Label10: TLabel;
+    swchDownloadLOCALAUDIO: TSwitch;
+    lblDownloadLOCALAUDIO: TLabel;
     procedure btnSettingsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure swchBigUISwitch(Sender: TObject);
@@ -161,6 +163,7 @@ begin
   settings.audioBitrateIndex := comboBoxAudioBitrate.ItemIndex;
   settings.downloadPlaylist := swchPlaylist.IsChecked;
   settings.downloadMP3 := swchOnlyAudio.IsChecked;
+  settings.downloadLOCALAUDIO := swchDownloadLOCALAUDIO.IsChecked;
   settings.createPlaylistDirs := swchAutoPlstFolders.IsChecked;
   settings.logsAutoScroll := swchLogsAutoScroll.IsChecked;
   writeConfigFile();
@@ -174,6 +177,7 @@ begin
   comboBoxAudioBitrate.ItemIndex := settings.audioBitrateIndex;
   swchPlaylist.IsChecked := settings.downloadPlaylist;
   swchOnlyAudio.IsChecked := settings.downloadMP3;
+  swchDownloadLOCALAUDIO.IsChecked := settings.downloadLOCALAUDIO;
   swchAutoPlstFolders.IsChecked := settings.createPlaylistDirs;
   swchLogsAutoScroll.IsChecked := settings.logsAutoScroll;
 end;
@@ -228,6 +232,7 @@ begin
   frmMain.Caption := APP_NAME + ' - Инстанция #' + IntToStr(FInstanceNumber);
   lblTitle.Text := APP_LBL_TITLE;
   lblSwchBigUI.Text := 'UI x' + BIG_UI_MUL.ToString();
+  lblDownloadLOCALAUDIO.Text := 'Локаль: ' + DEFAULT_LOCALE;
 
   log('[INFO] Запуск. Инстанция #' + IntToStr(FInstanceNumber));
   flushLogs();
@@ -248,6 +253,7 @@ begin
       'AudioBitrate' + CSV_DELIMITER +
       'Playlist' + CSV_DELIMITER +
       'MP3' + CSV_DELIMITER +
+      'Localised' + CSV_DELIMITER +
       'PlaylistDirs' + CSV_DELIMITER +
       'Urls' + sLineBreak);
   end;
@@ -531,9 +537,15 @@ begin
   currentUrlLaunchString := currentUrlLaunchString + ' -S "res:' +
     videoResolutions[settings.videoResolutionIndex].ToString() +
     ',ext:mp4:m4a,vcodec:h264"';
+  if settings.downloadLOCALAUDIO then
+    currentUrlLaunchString := currentUrlLaunchString + ' --extractor-args "youtube:player-client=android,tv_downgraded" -f "bestvideo+bestaudio[language='+DEFAULT_LOCALE+']/bestvideo+bestaudio" ';
   if settings.downloadMP3 then
-    currentUrlLaunchString := currentUrlLaunchString +
-      ' -f "bestaudio/best" -x --audio-format mp3 --audio-quality ' + audioBitrates[settings.audioBitrateIndex].ToString() + '';
+  begin
+    currentUrlLaunchString := currentUrlLaunchString + ' -f "bestaudio';
+    if settings.downloadLOCALAUDIO then
+      currentUrlLaunchString := currentUrlLaunchString + '[language^='+DEFAULT_LOCALE+']';
+    currentUrlLaunchString := currentUrlLaunchString + '/bestaudio" -x --audio-format mp3 --audio-quality ' + audioBitrates[settings.audioBitrateIndex].ToString() + '';
+  end;
   if settings.downloadPlaylist then
   begin
     currentUrlLaunchString := currentUrlLaunchString +
@@ -619,6 +631,7 @@ begin
     EscapeCSV(audioBitrates[settings.audioBitrateIndex].ToString()) + CSV_DELIMITER +
     EscapeCSV(BoolToStr(settings.downloadPlaylist, True)) + CSV_DELIMITER +
     EscapeCSV(BoolToStr(settings.downloadMP3, True)) + CSV_DELIMITER +
+    EscapeCSV(BoolToStr(settings.downloadLOCALAUDIO, True)) + CSV_DELIMITER +
     EscapeCSV(BoolToStr(settings.createPlaylistDirs, True)) + CSV_DELIMITER +
     EscapeCSV(urlsConcat);
 

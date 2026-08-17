@@ -13,6 +13,7 @@ type
     audioBitrateIndex: Integer;
     downloadPlaylist: Boolean;
     downloadMP3: Boolean;
+    downloadLOCALAUDIO: Boolean;
     createPlaylistDirs: Boolean;
     logsAutoScroll: Boolean;
   end;
@@ -23,6 +24,7 @@ function LoadSettingsFromFile(const FileName: string): TSettings;
 const
   defaultSettings: TSettings = (bigUi: True; downloadDir: FILE_DIR;
     videoResolutionIndex: 2; audioBitrateIndex: 1; downloadPlaylist: False; downloadMP3: False;
+    downloadLOCALAUDIO: False;
     createPlaylistDirs: False; logsAutoScroll: True;);
 
 implementation
@@ -42,6 +44,7 @@ begin
     Ini.WriteInteger(SECTION, 'AudioBitrateIndex', Settings.audioBitrateIndex);
     Ini.WriteBool(SECTION, 'DownloadPlaylist', Settings.downloadPlaylist);
     Ini.WriteBool(SECTION, 'DownloadMP3', Settings.downloadMP3);
+    Ini.WriteBool(SECTION, 'DownloadLOCALAUDIO', Settings.downloadLOCALAUDIO);
     Ini.WriteBool(SECTION, 'CreatePlaylistDirs', Settings.createPlaylistDirs);
     Ini.WriteBool(SECTION, 'LogsAutoScroll', Settings.logsAutoScroll);
   finally
@@ -61,6 +64,7 @@ begin
     Result.audioBitrateIndex := Ini.ReadInteger(SECTION, 'AudioBitrateIndex', defaultSettings.audioBitrateIndex);
     Result.downloadPlaylist := Ini.ReadBool(SECTION, 'DownloadPlaylist', defaultSettings.downloadPlaylist);
     Result.downloadMP3 := Ini.ReadBool(SECTION, 'DownloadMP3', defaultSettings.downloadMP3);
+    Result.downloadLOCALAUDIO := Ini.ReadBool(SECTION, 'DownloadLOCALAUDIO', defaultSettings.downloadLOCALAUDIO);
     Result.createPlaylistDirs := Ini.ReadBool(SECTION, 'CreatePlaylistDirs', defaultSettings.createPlaylistDirs);
     Result.logsAutoScroll := Ini.ReadBool(SECTION, 'LogsAutoScroll', defaultSettings.logsAutoScroll);
   finally
