@@ -23,11 +23,13 @@ type
     Image1: TImage;
     ScrollBox1: TScrollBox;
     repoLink: TLabel;
+    btnGetDENO: TButton;
     procedure btnGetYTDLPClick(Sender: TObject);
     procedure btnGetFFMPEGClick(Sender: TObject);
     procedure btnOpenDataDirClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure repoLinkClick(Sender: TObject);
+    procedure btnGetDENOClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -72,6 +74,37 @@ begin
   finally
     InternetCloseHandle(hSession);
   end;
+end;
+
+procedure TfrmSettings.btnGetDENOClick(Sender: TObject);
+var
+  Zip: TZipFile;
+  EntryName, RelPath, FolderPart, TargetFolder: string;
+begin
+  if not DirectoryExists(FILE_DIR) then
+    CreateDir(FILE_DIR);
+
+  if FileExists(FILE_DENO_DOWNLOADED) then
+    DeleteFile(FILE_DENO_DOWNLOADED);
+
+  if not DownloadFile(LATEST_DENO_DOWNLOAD_URL, FILE_DENO_DOWNLOADED) then
+  begin
+    btnGetDENO.Text := 'DENO - Œÿ»¡ ¿ «¿√–”« »';
+    Exit;
+  end;
+
+  Zip := TZipFile.Create;
+  try
+    Zip.Open(FILE_DENO_DOWNLOADED, zmRead);
+
+    Zip.Extract(FILE_DENO_EXENAME, FILE_DIR, False);
+
+    Zip.Close;
+  finally
+    Zip.Free;
+  end;
+
+  btnGetDENO.Text := 'DENO - ‚Ó‰Â Á‡‚Â¯ÂÌÓ';
 end;
 
 procedure TfrmSettings.btnGetFFMPEGClick(Sender: TObject);

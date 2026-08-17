@@ -3,7 +3,7 @@ unit ProjectConstants;
 interface
 
 const
-  APP_VER = '1.3.7';
+  APP_VER = '1.3.8';
   APP_NAME = 'DYDownFMX';
   APP_LBL_TITLE = 'Качалка ' + APP_VER;
   TEMPLATE_PROGRESS =
@@ -19,10 +19,15 @@ const
   FILE_FFMPEG_DOWNLOADED_INDIR = 'ffmpeg-master-latest-win64-gpl-shared';
   FILE_FFMPEG_DOWNLOADED = FILE_DIR + '\' +
     FILE_FFMPEG_DOWNLOADED_INDIR + '.zip';
+  FILE_DENO_EXENAME = 'deno.exe';
+  FILE_DENO = FILE_DIR + '\' + FILE_DENO_EXENAME;
+  FILE_DENO_DOWNLOADED = FILE_DIR + '\' + 'deno-x86_64-pc-windows-msvc.zip';
   LATEST_YTDLP_DOWNLOAD_URL =
     'https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe';
   LATEST_FFMPEG_DOWNLOAD_URL =
     'https://github.com/yt-dlp/FFmpeg-Builds/releases/latest/download/ffmpeg-master-latest-win64-gpl-shared.zip';
+  LATEST_DENO_DOWNLOAD_URL =
+    'https://github.com/denoland/deno/releases/latest/download/deno-x86_64-pc-windows-msvc.zip';
   BIG_UI_MUL = 1.25;
   MAX_INSTANCES = 128;
   BASE_MUTEX_NAME = 'DYDownFMX_' + APP_VER + '__Instance_';

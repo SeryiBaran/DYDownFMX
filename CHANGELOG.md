@@ -46,3 +46,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add functionality for downloading russian audio (DEFAULT_LOCALE in code)
 - Add version to name of the history file
+
+## 1.3.8 - 2026-08-17
+
+### Added
+
+- Add button to download Deno
+- Add warning message on every try to download without Deno

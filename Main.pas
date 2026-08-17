@@ -516,6 +516,7 @@ begin
     currentUrlLaunchString := currentUrlLaunchString + ' --no-playlist';
   currentUrlLaunchString := currentUrlLaunchString + ' --ffmpeg-location ' +
     FILE_FFMPEG_DIR;
+  currentUrlLaunchString := currentUrlLaunchString + ' --js-runtimes deno:' + FILE_DENO;
   if settings.createPlaylistDirs and settings.downloadPlaylist and
     normalizedUrls[currentUrlProcessingIndex].Contains('list') then
   begin
@@ -613,6 +614,13 @@ begin
     log('[ERR] Не найден ffmpeg! Откройте меню настройки или вручную скачайте и распакуйте в '
       + FFMPEG_DIR);
     Exit;
+  end;
+
+  if not TFile.Exists(FILE_DENO) then
+  begin
+    log('[ERR] Не найден deno.exe! Откройте меню настройки или вручную скачайте в '
+      + FILE_DENO);
+    ShowMessage('Не найден DENO. Откройте меню настройки для скачивания, или скачайте вручную в '+ FILE_DENO + '. Без DENO трудно добиться стабильного скачивания из-за JS-задач от Youtube, решением которых DENO и занимается. После закрытия этого окна скачивание продолжится, но всё же, советую скачать DENO.');
   end;
 
   btnDownload.Enabled := False;
