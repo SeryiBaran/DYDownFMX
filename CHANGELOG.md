@@ -84,10 +84,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix TTS error when engine isnt installed
 
-## 1.4.4 - []
+## 1.4.4 - 2026-08-19
 
 ### Added
 
 - Ability to disable TTS report
 - ISO Time in the finish message
 - 25.12 - 05.01 rgb effect
+
+## 1.4.5 - 2026-08-20
+
+### Added
+
+- add welcome changelog message
