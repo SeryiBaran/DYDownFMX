@@ -2,7 +2,7 @@ object frmSettings: TfrmSettings
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 475
+  ClientHeight = 458
   ClientWidth = 260
   StyleBook = frmMain.MaterialOxfordBlueSB
   FormFactor.Width = 320
@@ -17,11 +17,11 @@ object frmSettings: TfrmSettings
     Padding.Right = 8.000000000000000000
     Padding.Bottom = 8.000000000000000000
     Size.Width = 260.000000000000000000
-    Size.Height = 475.000000000000000000
+    Size.Height = 458.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     Viewport.Width = 260.000000000000000000
-    Viewport.Height = 475.000000000000000000
+    Viewport.Height = 458.000000000000000000
     object btnGetFFMPEG: TButton
       Align = Top
       Position.X = 8.000000000000000000

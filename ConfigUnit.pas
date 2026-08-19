@@ -18,6 +18,7 @@ type
     useCookies: Boolean;
     cookiesFile: string;
     logsAutoScroll: Boolean;
+    useTTSReport: Boolean;
   end;
 
 procedure SaveSettingsToFile(const Settings: TSettings; const FileName: string);
@@ -27,7 +28,7 @@ const
   defaultSettings: TSettings = (bigUi: True; downloadDir: FILE_DIR;
     videoResolutionIndex: 2; audioBitrateIndex: 1; downloadPlaylist: False; downloadMP3: False;
     downloadLOCALAUDIO: False;
-    createPlaylistDirs: False; useCookies: False; cookiesFile: DEFAULT_COOKIES_FILE; logsAutoScroll: True;);
+    createPlaylistDirs: False; useCookies: False; cookiesFile: DEFAULT_COOKIES_FILE; logsAutoScroll: True; useTTSReport: False;);
 
 implementation
 
@@ -51,6 +52,7 @@ begin
     Ini.WriteBool(SECTION, 'UseCookies', Settings.useCookies);
     Ini.WriteString(SECTION, 'CookiesFile', Settings.cookiesFile);
     Ini.WriteBool(SECTION, 'LogsAutoScroll', Settings.logsAutoScroll);
+    Ini.WriteBool(SECTION, 'UseTTSReport', Settings.useTTSReport);
   finally
     Ini.Free;
   end;
@@ -73,6 +75,7 @@ begin
     Result.useCookies := Ini.ReadBool(SECTION, 'UseCookies', defaultSettings.useCookies);
     Result.cookiesFile := Ini.ReadString(SECTION, 'CookiesFile', defaultSettings.cookiesFile);
     Result.logsAutoScroll := Ini.ReadBool(SECTION, 'LogsAutoScroll', defaultSettings.logsAutoScroll);
+    Result.useTTSReport := Ini.ReadBool(SECTION, 'UseTTSReport', defaultSettings.useTTSReport);
   finally
     Ini.Free;
   end;

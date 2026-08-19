@@ -83,3 +83,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fix TTS error when engine isnt installed
+
+## 1.4.4 - []
+
+### Added
+
+- Ability to disable TTS report
+- ISO Time in the finish message

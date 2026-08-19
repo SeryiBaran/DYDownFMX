@@ -84,6 +84,8 @@ type
     Label11: TLabel;
     btnSelectCookies: TButton;
     edtCookiesFile: TEdit;
+    Label12: TLabel;
+    swchUseTTSReport: TSwitch;
     procedure btnSettingsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure swchBigUISwitch(Sender: TObject);
@@ -101,6 +103,7 @@ type
     procedure tmrMemoLogsFlushTimer(Sender: TObject);
     procedure swchLogsAutoScrollSwitch(Sender: TObject);
     procedure btnSelectCookiesClick(Sender: TObject);
+    procedure swchUseTTSReportSwitch(Sender: TObject);
 
   private
     { Private declarations }
@@ -177,6 +180,7 @@ begin
   settings.useCookies := swchCookies.IsChecked;
   settings.cookiesFile := Trim(edtCookiesFile.Text);
   settings.logsAutoScroll := swchLogsAutoScroll.IsChecked;
+  settings.useTTSReport := swchUseTTSReport.IsChecked;
   writeConfigFile();
 end;
 
@@ -193,6 +197,7 @@ begin
   swchCookies.IsChecked := settings.useCookies;
   edtCookiesFile.Text := settings.cookiesFile;
   swchLogsAutoScroll.IsChecked := settings.logsAutoScroll;
+  swchUseTTSReport.IsChecked := settings.useTTSReport;
 end;
 
 procedure TfrmMain.btnSettingsClick(Sender: TObject);
@@ -242,10 +247,10 @@ begin
   TStyleManager.SetStyle(MaterialOxfordBlueSB.Style);
 
   lblInstanceNumber.Text := '#' + IntToStr(FInstanceNumber);
-  frmMain.Caption := APP_NAME + ' - Инстанция #' + IntToStr(FInstanceNumber);
+  frmMain.Caption := APP_NAME + ' #' + IntToStr(FInstanceNumber);
   lblTitle.Text := APP_LBL_TITLE;
   lblSwchBigUI.Text := 'UI x' + BIG_UI_MUL.ToString();
-  lblDownloadLOCALAUDIO.Text := 'Локаль: ' + DEFAULT_LOCALE;
+  lblDownloadLOCALAUDIO.Text := 'Аудио-дорожка ' + DEFAULT_LOCALE;
 
   log('[INFO] Запуск. Инстанция #' + IntToStr(FInstanceNumber));
   flushLogs();
@@ -388,6 +393,12 @@ begin
   writeConfigFile();
 end;
 
+procedure TfrmMain.swchUseTTSReportSwitch(Sender: TObject);
+begin
+  settings.useTTSReport := swchUseTTSReport.IsChecked;
+  writeConfigFile();
+end;
+
 procedure TfrmMain.btnPasteClick(Sender: TObject);
 var
   Svc: IFMXClipboardService;
@@ -492,7 +503,7 @@ var
   currentErrorURLNumber: Integer;
   R: TRegEx;
 begin
-  log('[INFO] СКАЧИВАНИЕ ЗАВЕРШЕНО');
+  log(Format('[INFO] СКАЧИВАНИЕ ЗАВЕРШЕНО %s', [Date.Now().ToISO8601(False)]));
 
   if Length(downloadErrors) > 0 then
   begin
@@ -619,11 +630,14 @@ procedure TfrmMain.SpeakText(const Text: string; const PreferredVoice: string = 
 var
   SpeakText: string;
 begin
-  try
-    SpeakText := '<voice required="Name=' + PreferredVoice + '">' + Text + '</voice>';
-    FVoice.Speak(SpeakText, 1); // асинхронно, но объект живёт
-  except
-    on E: Exception do log('Ошибка TTS: ' + E.Message);
+  if settings.useTTSReport then
+  begin
+    try
+      SpeakText := '<voice required="Name=' + PreferredVoice + '">' + Text + '</voice>';
+      FVoice.Speak(SpeakText, 1); // асинхронно, но объект живёт
+    except
+      on E: Exception do log('[ERR]: TTS: ' + E.Message);
+    end;
   end;
 end;
 
