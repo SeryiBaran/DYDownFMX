@@ -11,7 +11,7 @@ uses
   Winapi.Windows, Winapi.Messages, Vcl.Dialogs, System.IOUtils, DateUtils,
   System.Rtti, FMX.Platform, FMX.Surfaces, FMX.Objects, System.RegularExpressions, System.Generics.Collections,
   // Third-party
-  DosCommand,
+  DosCommand, System.Win.ComObj, Winapi.ActiveX,
   // My
   ProjectConstants, ConfigUnit, ShellKnownPath, SettingsForm, Utils,
   System.Math.Vectors, FMX.Controls3D, FMX.Layers3D;
@@ -106,6 +106,7 @@ type
     { Private declarations }
     FInstanceMutexHandle: THandle;
     FInstanceNumber: Integer;
+    FVoice: OleVariant;
     procedure downloadInstanceFinished();
     procedure downloadFinished();
     procedure downloadNext();
@@ -119,6 +120,7 @@ type
     procedure updateIndicator();
     procedure log(message: string);
     procedure flushLogs();
+    procedure SpeakText(const Text: string; const PreferredVoice: string = 'Aleksandr-hq');
   public
     { Public declarations }
   end;
@@ -298,12 +300,17 @@ begin
   end;
 
   updateFormFromSettings();
+
+  CoInitialize(nil); // если ещё не инициализирован
+  FVoice := CreateOleObject('SAPI.SpVoice');
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
 begin
   if FInstanceMutexHandle <> 0 then
     CloseHandle(FInstanceMutexHandle);
+  FVoice := Unassigned; // или FVoice := Null;
+  CoUninitialize;
 end;
 
 function GetNormalizedURLs(const urlsString: string): TArray<string>;
@@ -512,6 +519,8 @@ begin
     log('[ERROR] АХТУНГ!!! Скачивание завершено с ошибками у ' + Length(errorsUrlsNums).ToString() + ' из ' + Length(normalizedUrls).ToString() + ' адресов');
   end;
 
+  SpeakText('Инстанция ' + FInstanceNumber.ToString + ' работу завершила.' + if Length(downloadErrors) > 0 then ' Количество ошибок: ' + Length(downloadErrors).ToString + '. Проблемных адресов: ' + Length(errorsUrlsNums).ToString() + '. Всего адресов: ' + Length(normalizedUrls).ToString() + '.' else ' Ошибок нет.');
+
   btnDownload.Enabled := True;
   updateIndicator();
 end;
@@ -604,6 +613,18 @@ begin
   indicator2.Visible := False;
   updateIndicator();
   currentUrlProcessingIndex := 0;
+end;
+
+procedure TfrmMain.SpeakText(const Text: string; const PreferredVoice: string = 'Aleksandr-hq');
+var
+  SpeakText: string;
+begin
+  try
+    SpeakText := '<voice required="Name=' + PreferredVoice + '">' + Text + '</voice>';
+    FVoice.Speak(SpeakText, 1); // асинхронно, но объект живёт
+  except
+    on E: Exception do ShowMessage('Ошибка: ' + E.Message);
+  end;
 end;
 
 procedure TfrmMain.btnClearUrlsClick(Sender: TObject);
@@ -719,3 +740,4 @@ begin
 end;
 
 end.
+

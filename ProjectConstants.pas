@@ -3,7 +3,7 @@ unit ProjectConstants;
 interface
 
 const
-  APP_VER = '1.3.9';
+  APP_VER = '1.4.0';
   APP_NAME = 'DYDownFMX';
   APP_LBL_TITLE = 'Качалка ' + APP_VER;
   TEMPLATE_PROGRESS =
@@ -28,8 +28,10 @@ const
     'https://github.com/yt-dlp/FFmpeg-Builds/releases/latest/download/ffmpeg-master-latest-win64-gpl-shared.zip';
   LATEST_DENO_DOWNLOAD_URL =
     'https://github.com/denoland/deno/releases/latest/download/deno-x86_64-pc-windows-msvc.zip';
+  LATEST_VOICE_DOWNLOAD_URL =
+    'https://rhvoice.su/downloads/?voice=aleksandr-hq&type=sapi&version=4.1.2011.17';
   BIG_UI_MUL = 1.25;
-  MAX_INSTANCES = 128;
+  MAX_INSTANCES = 32;
   BASE_MUTEX_NAME = 'DYDownFMX_' + APP_VER + '__Instance_';
   videoResolutions: TArray<Integer> = [144, 240, 360, 480, 720, 1080,
     1440, 2160];
