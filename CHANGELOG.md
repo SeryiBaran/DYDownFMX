@@ -53,3 +53,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add button to download Deno
 - Add warning message on every try to download without Deno
+
+## 1.3.9 - 2026-08-19
+
+### Added
+
+- Add ability to pass cookies.txt

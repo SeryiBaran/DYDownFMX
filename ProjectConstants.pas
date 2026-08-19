@@ -3,7 +3,7 @@ unit ProjectConstants;
 interface
 
 const
-  APP_VER = '1.3.8';
+  APP_VER = '1.3.9';
   APP_NAME = 'DYDownFMX';
   APP_LBL_TITLE = 'Качалка ' + APP_VER;
   TEMPLATE_PROGRESS =
@@ -36,6 +36,7 @@ const
   audioBitrates: TArray<Integer> = [128, 192, 320];
   ERROR_URL_NUMBER_REGEX: string = '^#URL::(\d+)::';
   DEFAULT_LOCALE = 'ru';
+  DEFAULT_COOKIES_FILE = FILE_DIR + '\cookies.txt';
 
 implementation
 

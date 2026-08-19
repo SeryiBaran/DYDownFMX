@@ -15,6 +15,8 @@ type
     downloadMP3: Boolean;
     downloadLOCALAUDIO: Boolean;
     createPlaylistDirs: Boolean;
+    useCookies: Boolean;
+    cookiesFile: string;
     logsAutoScroll: Boolean;
   end;
 
@@ -25,7 +27,7 @@ const
   defaultSettings: TSettings = (bigUi: True; downloadDir: FILE_DIR;
     videoResolutionIndex: 2; audioBitrateIndex: 1; downloadPlaylist: False; downloadMP3: False;
     downloadLOCALAUDIO: False;
-    createPlaylistDirs: False; logsAutoScroll: True;);
+    createPlaylistDirs: False; useCookies: False; cookiesFile: DEFAULT_COOKIES_FILE; logsAutoScroll: True;);
 
 implementation
 
@@ -46,6 +48,8 @@ begin
     Ini.WriteBool(SECTION, 'DownloadMP3', Settings.downloadMP3);
     Ini.WriteBool(SECTION, 'DownloadLOCALAUDIO', Settings.downloadLOCALAUDIO);
     Ini.WriteBool(SECTION, 'CreatePlaylistDirs', Settings.createPlaylistDirs);
+    Ini.WriteBool(SECTION, 'UseCookies', Settings.useCookies);
+    Ini.WriteString(SECTION, 'CookiesFile', Settings.cookiesFile);
     Ini.WriteBool(SECTION, 'LogsAutoScroll', Settings.logsAutoScroll);
   finally
     Ini.Free;
@@ -66,6 +70,8 @@ begin
     Result.downloadMP3 := Ini.ReadBool(SECTION, 'DownloadMP3', defaultSettings.downloadMP3);
     Result.downloadLOCALAUDIO := Ini.ReadBool(SECTION, 'DownloadLOCALAUDIO', defaultSettings.downloadLOCALAUDIO);
     Result.createPlaylistDirs := Ini.ReadBool(SECTION, 'CreatePlaylistDirs', defaultSettings.createPlaylistDirs);
+    Result.useCookies := Ini.ReadBool(SECTION, 'UseCookies', defaultSettings.useCookies);
+    Result.cookiesFile := Ini.ReadString(SECTION, 'CookiesFile', defaultSettings.cookiesFile);
     Result.logsAutoScroll := Ini.ReadBool(SECTION, 'LogsAutoScroll', defaultSettings.logsAutoScroll);
   finally
     Ini.Free;

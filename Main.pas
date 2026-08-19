@@ -13,7 +13,8 @@ uses
   // Third-party
   DosCommand,
   // My
-  ProjectConstants, ConfigUnit, ShellKnownPath, SettingsForm, Utils;
+  ProjectConstants, ConfigUnit, ShellKnownPath, SettingsForm, Utils,
+  System.Math.Vectors, FMX.Controls3D, FMX.Layers3D;
 
 type
   TYTProgress = record
@@ -78,6 +79,11 @@ type
     Label10: TLabel;
     swchDownloadLOCALAUDIO: TSwitch;
     lblDownloadLOCALAUDIO: TLabel;
+    Layout10: TLayout;
+    swchCookies: TSwitch;
+    Label11: TLabel;
+    btnSelectCookies: TButton;
+    edtCookiesFile: TEdit;
     procedure btnSettingsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure swchBigUISwitch(Sender: TObject);
@@ -94,6 +100,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure tmrMemoLogsFlushTimer(Sender: TObject);
     procedure swchLogsAutoScrollSwitch(Sender: TObject);
+    procedure btnSelectCookiesClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -165,6 +172,8 @@ begin
   settings.downloadMP3 := swchOnlyAudio.IsChecked;
   settings.downloadLOCALAUDIO := swchDownloadLOCALAUDIO.IsChecked;
   settings.createPlaylistDirs := swchAutoPlstFolders.IsChecked;
+  settings.useCookies := swchCookies.IsChecked;
+  settings.cookiesFile := Trim(edtCookiesFile.Text);
   settings.logsAutoScroll := swchLogsAutoScroll.IsChecked;
   writeConfigFile();
 end;
@@ -179,6 +188,8 @@ begin
   swchOnlyAudio.IsChecked := settings.downloadMP3;
   swchDownloadLOCALAUDIO.IsChecked := settings.downloadLOCALAUDIO;
   swchAutoPlstFolders.IsChecked := settings.createPlaylistDirs;
+  swchCookies.IsChecked := settings.useCookies;
+  edtCookiesFile.Text := settings.cookiesFile;
   swchLogsAutoScroll.IsChecked := settings.logsAutoScroll;
 end;
 
@@ -255,6 +266,8 @@ begin
       'MP3' + CSV_DELIMITER +
       'Localised' + CSV_DELIMITER +
       'PlaylistDirs' + CSV_DELIMITER +
+      'UseCookies' + CSV_DELIMITER +
+      'CookiesFile' + CSV_DELIMITER +
       'Urls' + sLineBreak);
   end;
 
@@ -400,6 +413,21 @@ begin
   logsFileName := Date.Now().ToISO8601(False).Replace(':', '_') + '.txt';
   TFile.AppendAllText(FILE_LOGS_DIR + '\' + logsFileName,
     memoLogs.Text + String.Join(sLineBreak, logsBuffer));
+end;
+
+procedure TfrmMain.btnSelectCookiesClick(Sender: TObject);
+begin
+  with TFileOpenDialog.Create(nil) do
+    try
+      Options := [];
+      if Execute then
+      begin
+        settings.cookiesFile := FileName;
+        edtCookiesFile.Text := settings.cookiesFile;
+      end;
+    finally
+      Free
+    end;
 end;
 
 procedure TfrmMain.btnSelectDownloadDirClick(Sender: TObject);
@@ -557,6 +585,8 @@ begin
     currentUrlLaunchString := currentUrlLaunchString +
       ' -o "%(title).120s [%(id)s].%(ext)s"';
   end;
+  if settings.useCookies then
+    currentUrlLaunchString := currentUrlLaunchString + ' --cookies "' + settings.cookiesFile + '"';
 
   currentUrlLaunchString := currentUrlLaunchString + ' "' + normalizedUrls
     [currentUrlProcessingIndex] + '"';
@@ -623,6 +653,12 @@ begin
     ShowMessage('Не найден DENO. Откройте меню настройки для скачивания, или скачайте вручную в '+ FILE_DENO + '. Без DENO трудно добиться стабильного скачивания из-за JS-задач от Youtube, решением которых DENO и занимается. После закрытия этого окна скачивание продолжится, но всё же, советую скачать DENO.');
   end;
 
+  if settings.useCookies and not TFile.Exists(settings.cookiesFile) then
+  begin
+    log('[ERROR] ВЫБРАННЫЙ ФАЙЛ С КУКАМИ НЕ НАЙДЕН!');
+    Exit;
+  end;
+
   btnDownload.Enabled := False;
   canceling := False;
   resetDownload();
@@ -641,6 +677,7 @@ begin
     EscapeCSV(BoolToStr(settings.downloadMP3, True)) + CSV_DELIMITER +
     EscapeCSV(BoolToStr(settings.downloadLOCALAUDIO, True)) + CSV_DELIMITER +
     EscapeCSV(BoolToStr(settings.createPlaylistDirs, True)) + CSV_DELIMITER +
+    EscapeCSV(BoolToStr(settings.useCookies, True)) + CSV_DELIMITER +
     EscapeCSV(urlsConcat);
 
   TFile.AppendAllText(FILE_HISTORY, csvLine + sLineBreak);
