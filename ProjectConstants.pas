@@ -3,7 +3,7 @@ unit ProjectConstants;
 interface
 
 const
-  APP_VER = '1.4.1';
+  APP_VER = '1.4.2';
   APP_NAME = 'DYDownFMX';
   APP_LBL_TITLE = 'Качалка ' + APP_VER;
   TEMPLATE_PROGRESS =

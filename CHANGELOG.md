@@ -71,3 +71,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add TTS installing
+
+## 1.4.2 - 2026-08-19
+
+### Fixed
+
+- Fix CookiesFile not saving in the history

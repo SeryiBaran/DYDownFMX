@@ -699,6 +699,7 @@ begin
     EscapeCSV(BoolToStr(settings.downloadLOCALAUDIO, True)) + CSV_DELIMITER +
     EscapeCSV(BoolToStr(settings.createPlaylistDirs, True)) + CSV_DELIMITER +
     EscapeCSV(BoolToStr(settings.useCookies, True)) + CSV_DELIMITER +
+    EscapeCSV(settings.cookiesFile) + CSV_DELIMITER +
     EscapeCSV(urlsConcat);
 
   TFile.AppendAllText(FILE_HISTORY, csvLine + sLineBreak);

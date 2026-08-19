@@ -22640,8 +22640,8 @@ object frmMain: TfrmMain
         Size.Height = 184.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 4
-        Viewport.Width = 361.000000000000000000
-        Viewport.Height = 184.000000000000000000
+        Viewport.Width = 357.000000000000000000
+        Viewport.Height = 180.000000000000000000
       end
       object Layout2: TLayout
         Align = Bottom
@@ -22978,8 +22978,8 @@ object frmMain: TfrmMain
         Size.Height = 492.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 18
-        Viewport.Width = 383.000000000000000000
-        Viewport.Height = 492.000000000000000000
+        Viewport.Width = 379.000000000000000000
+        Viewport.Height = 488.000000000000000000
       end
       object btnSaveLogs: TButton
         Align = Top
