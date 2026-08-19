@@ -41,6 +41,7 @@ const
   ERROR_URL_NUMBER_REGEX: string = '^#URL::(\d+)::';
   DEFAULT_LOCALE = 'ru';
   DEFAULT_COOKIES_FILE = FILE_DIR + '\cookies.txt';
+  bruhQueries: TArray<string> = ['.πτ'];
 
 implementation
 

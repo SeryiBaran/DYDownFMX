@@ -317,7 +317,6 @@ begin
     rect1.Visible := True;
     tmrRGB.Enabled := True;
   end;
-
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
@@ -554,6 +553,16 @@ begin
 
   SpeakText('Инстанция ' + FInstanceNumber.ToString + ' работу завершила.' + if Length(downloadErrors) > 0 then ' Количество ошибок: ' + Length(downloadErrors).ToString + '. Проблемных адресов: ' + Length(errorsUrlsNums).ToString() + '. Всего адресов: ' + Length(normalizedUrls).ToString() + '.' else ' Ошибок нет.');
 
+  if Length(downloadErrors) > 50 then
+  begin
+    SpeakText('Произошло более пятидесяти ошибок. Советую проверить обход блокировок и срок годности правящей партии.');
+    SpeakText('Настоящий материал (информация) (произведен, распространен и (или) направлен) иностранным агентом либо касается деятельности иностранного агента');
+
+  end;
+
+  if ContainsAnySubstring(normalizedUrls, bruhQueries) then
+    SpeakText('Упаси меня господь. Ты где нашел сайт с доменом "эр эф"? Совсем того?');
+
   btnDownload.Enabled := True;
   updateIndicator();
 end;
@@ -656,7 +665,7 @@ begin
   begin
     try
       SpeakText := '<voice required="Name=' + PreferredVoice + '">' + Text + '</voice>';
-      FVoice.Speak(SpeakText, 1); // асинхронно, но объект живёт
+      FVoice.Speak(SpeakText, 1 + $08); // асинхронно, но объект живёт
     except
       on E: Exception do log('[ERR]: TTS: ' + E.Message);
     end;
