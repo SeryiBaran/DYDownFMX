@@ -24,12 +24,14 @@ type
     ScrollBox1: TScrollBox;
     repoLink: TLabel;
     btnGetDENO: TButton;
+    btnGetTTS: TButton;
     procedure btnGetYTDLPClick(Sender: TObject);
     procedure btnGetFFMPEGClick(Sender: TObject);
     procedure btnOpenDataDirClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure repoLinkClick(Sender: TObject);
     procedure btnGetDENOClick(Sender: TObject);
+    procedure btnGetTTSClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -39,6 +41,33 @@ type
 implementation
 
 {$R *.fmx}
+
+function RunAsAdminAndWait(const aFile, aParams: string): Boolean;
+var
+  sei: TShellExecuteInfo;
+  ExitCode: DWORD;
+begin
+  Result := False;
+  FillChar(sei, SizeOf(sei), 0);
+  sei.cbSize := SizeOf(sei);
+  sei.fMask := SEE_MASK_NOCLOSEPROCESS or SEE_MASK_FLAG_DDEWAIT;
+  sei.lpVerb := 'runas';  // Запрос прав администратора
+  sei.lpFile := PChar(aFile);
+  sei.lpParameters := PChar(aParams);
+  sei.nShow := SW_HIDE;   // Скрываем окно
+
+  if ShellExecuteEx(@sei) then
+  begin
+    // Ожидаем завершения установки
+    WaitForSingleObject(sei.hProcess, INFINITE);
+
+    // Получаем код возврата
+    if GetExitCodeProcess(sei.hProcess, ExitCode) then
+      Result := (ExitCode = 0);
+
+    CloseHandle(sei.hProcess);
+  end;
+end;
 
 function DownloadFile(const URL, FileName: string): Boolean;
 const
@@ -163,6 +192,55 @@ begin
   btnGetFFMPEG.Text := 'FFMPEG - вроде завершено';
 end;
 
+procedure TfrmSettings.btnGetTTSClick(Sender: TObject);
+var
+  Zip: TZipFile;
+  EntryName, DestFile: string;
+  InstallerPath: string;
+  InstallParams: string;
+begin
+  if not DirectoryExists(FILE_DIR) then
+    CreateDir(FILE_DIR);
+
+  //if FileExists(FILE_TTS_ZIP) then
+  //  DeleteFile(FILE_TTS_ZIP);
+
+  if FileExists(FILE_TTS_INST) then
+    DeleteFile(FILE_TTS_INST);
+
+  //if not DownloadFile(LATEST_TTS_DOWNLOAD_URL, FILE_TTS_ZIP) then
+  if not DownloadFile(LATEST_TTS_DOWNLOAD_URL, FILE_TTS_INST) then
+  begin
+    btnGetTTS.Text := 'TTS - ОШИБКА ЗАГРУЗКИ';
+    Exit;
+  end;
+
+  //Zip := TZipFile.Create;
+  //try
+  //  Zip.Open(FILE_TTS_ZIP, zmRead);
+  //
+  //  if Zip.FileCount > 0 then
+  //  begin
+  //    EntryName := Zip.FileName[0];               // имя первого файла в архиве
+  //    DestFile := FILE_TTS_INST;
+  //    Zip.Extract(EntryName, DestFile);           // извлечение сразу с нужным именем
+  //  end
+  //  else
+  //    raise Exception.Create('Архив пуст или не содержит файлов');
+  //
+  //  Zip.Close;
+  //finally
+  //  Zip.Free;
+  //end;
+
+  InstallerPath := FILE_TTS_INST;
+  InstallParams := '/S';
+
+  if RunAsAdminAndWait(InstallerPath, InstallParams) then
+    btnGetTTS.Text := 'TTS - вроде завершено'
+  else
+    btnGetTTS.Text := 'TTS - ОШИБКА УСТАНОВКИ';
+end;
 procedure TfrmSettings.btnGetYTDLPClick(Sender: TObject);
 begin
   if not DirectoryExists(FILE_DIR) then

@@ -2,7 +2,7 @@ object frmSettings: TfrmSettings
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 412
+  ClientHeight = 475
   ClientWidth = 260
   StyleBook = frmMain.MaterialOxfordBlueSB
   FormFactor.Width = 320
@@ -17,11 +17,11 @@ object frmSettings: TfrmSettings
     Padding.Right = 8.000000000000000000
     Padding.Bottom = 8.000000000000000000
     Size.Width = 260.000000000000000000
-    Size.Height = 412.000000000000000000
+    Size.Height = 475.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
     Viewport.Width = 260.000000000000000000
-    Viewport.Height = 412.000000000000000000
+    Viewport.Height = 475.000000000000000000
     object btnGetFFMPEG: TButton
       Align = Top
       Position.X = 8.000000000000000000
@@ -29,7 +29,7 @@ object frmSettings: TfrmSettings
       Size.Width = 244.000000000000000000
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 4
+      TabOrder = 5
       Text = #1057#1082#1072#1095#1072#1090#1100' '#1080#1083#1080' '#1086#1073#1085#1086#1074#1080#1090#1100' FFMPEG'
       OnClick = btnGetFFMPEGClick
     end
@@ -40,14 +40,14 @@ object frmSettings: TfrmSettings
       Size.Width = 244.000000000000000000
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 5
+      TabOrder = 6
       Text = #1057#1082#1072#1095#1072#1090#1100' '#1080#1083#1080' '#1086#1073#1085#1086#1074#1080#1090#1100' YT_DLP'
       OnClick = btnGetYTDLPClick
     end
     object btnOpenDataDir: TButton
       Align = Top
       Position.X = 8.000000000000000000
-      Position.Y = 362.000000000000000000
+      Position.Y = 402.000000000000000000
       Size.Width = 244.000000000000000000
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
@@ -1700,14 +1700,14 @@ object frmSettings: TfrmSettings
       AutoSize = True
       Margins.Top = 8.000000000000000000
       Position.X = 8.000000000000000000
-      Position.Y = 257.000000000000000000
+      Position.Y = 297.000000000000000000
       Size.Width = 244.000000000000000000
       Size.Height = 80.000000000000000000
       Size.PlatformDefault = False
       Text = 
         'DYDownFMX, '#1091#1090#1080#1083#1080#1090#1072'-'#1086#1073#1105#1088#1090#1082#1072' '#1085#1072#1076' YT-DLP.'#13#10#1057#1086#1079#1076#1072#1085#1086' '#1085#1072' Delphi 13.'#13#10#1057 +
         #1086#1079#1076#1072#1090#1077#1083#1100' - SeryiBaran.'#13#10#13#10#1055#1088#1086#1095#1080#1090#1072#1081#1090#1077' '#1080#1085#1092#1091' '#1080#1079' '#1088#1077#1087#1086#1079#1080#1090#1086#1088#1080#1103':'
-      TabOrder = 7
+      TabOrder = 8
     end
     object repoLink: TLabel
       Align = Top
@@ -1716,13 +1716,13 @@ object frmSettings: TfrmSettings
       HitTest = True
       Margins.Bottom = 8.000000000000000000
       Position.X = 8.000000000000000000
-      Position.Y = 337.000000000000000000
+      Position.Y = 377.000000000000000000
       Size.Width = 244.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
       TextSettings.Font.StyleExt = {04040000000000000004000000}
       Text = 'https://github.com/SeryiBaran/DYDownFMX'
-      TabOrder = 8
+      TabOrder = 9
       OnClick = repoLinkClick
     end
     object btnGetDENO: TButton
@@ -1732,9 +1732,20 @@ object frmSettings: TfrmSettings
       Size.Width = 244.000000000000000000
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 3
+      TabOrder = 4
       Text = #1057#1082#1072#1095#1072#1090#1100' '#1080#1083#1080' '#1086#1073#1085#1086#1074#1080#1090#1100' DENO'
       OnClick = btnGetDENOClick
+    end
+    object btnGetTTS: TButton
+      Align = Top
+      Position.X = 8.000000000000000000
+      Position.Y = 249.000000000000000000
+      Size.Width = 244.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      Text = #1057#1082#1072#1095#1072#1090#1100' Aleksandr-hq'
+      OnClick = btnGetTTSClick
     end
   end
 end

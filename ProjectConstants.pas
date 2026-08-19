@@ -3,7 +3,7 @@ unit ProjectConstants;
 interface
 
 const
-  APP_VER = '1.4.0';
+  APP_VER = '1.4.1';
   APP_NAME = 'DYDownFMX';
   APP_LBL_TITLE = 'Качалка ' + APP_VER;
   TEMPLATE_PROGRESS =
@@ -22,13 +22,15 @@ const
   FILE_DENO_EXENAME = 'deno.exe';
   FILE_DENO = FILE_DIR + '\' + FILE_DENO_EXENAME;
   FILE_DENO_DOWNLOADED = FILE_DIR + '\' + 'deno-x86_64-pc-windows-msvc.zip';
+  //FILE_TTS_ZIP = FILE_DIR + '\' + 'tts.zip';
+  FILE_TTS_INST = FILE_DIR + '\' + 'tts.exe';
   LATEST_YTDLP_DOWNLOAD_URL =
     'https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe';
   LATEST_FFMPEG_DOWNLOAD_URL =
     'https://github.com/yt-dlp/FFmpeg-Builds/releases/latest/download/ffmpeg-master-latest-win64-gpl-shared.zip';
   LATEST_DENO_DOWNLOAD_URL =
     'https://github.com/denoland/deno/releases/latest/download/deno-x86_64-pc-windows-msvc.zip';
-  LATEST_VOICE_DOWNLOAD_URL =
+  LATEST_TTS_DOWNLOAD_URL =
     'https://rhvoice.su/downloads/?voice=aleksandr-hq&type=sapi&version=4.1.2011.17';
   BIG_UI_MUL = 1.25;
   MAX_INSTANCES = 32;
