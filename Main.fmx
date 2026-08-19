@@ -16,6 +16,19 @@ object frmMain: TfrmMain
   Left = 100
   Top = 100
   DesignerMasterStyle = 0
+  object rect1: TRectangle
+    Align = Client
+    Fill.Color = claNull
+    Margins.Left = 2.000000000000000000
+    Margins.Top = 2.000000000000000000
+    Margins.Right = 2.000000000000000000
+    Margins.Bottom = 2.000000000000000000
+    Size.Width = 764.000000000000000000
+    Size.Height = 508.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Thickness = 4.000000000000000000
+    Visible = False
+  end
   object MaterialOxfordBlueSB: TStyleBook
     UseStyleManager = True
     Styles = <
@@ -23085,5 +23098,12 @@ object frmMain: TfrmMain
     OnTerminated = dscmndPlaylistNameGetTerminated
     Left = 520
     Top = 248
+  end
+  object tmrRGB: TTimer
+    Enabled = False
+    Interval = 100
+    OnTimer = tmrRGBTimer
+    Left = 473
+    Top = 108
   end
 end

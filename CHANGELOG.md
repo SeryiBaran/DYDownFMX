@@ -90,3 +90,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Ability to disable TTS report
 - ISO Time in the finish message
+- 25.12 - 05.01 rgb effect

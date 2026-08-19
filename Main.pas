@@ -14,7 +14,7 @@ uses
   DosCommand, System.Win.ComObj, Winapi.ActiveX,
   // My
   ProjectConstants, ConfigUnit, ShellKnownPath, SettingsForm, Utils,
-  System.Math.Vectors, FMX.Controls3D, FMX.Layers3D;
+  System.Math.Vectors, FMX.Controls3D, FMX.Layers3D, FMX.Ani;
 
 type
   TYTProgress = record
@@ -86,6 +86,8 @@ type
     edtCookiesFile: TEdit;
     Label12: TLabel;
     swchUseTTSReport: TSwitch;
+    tmrRGB: TTimer;
+    rect1: TRectangle;
     procedure btnSettingsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure swchBigUISwitch(Sender: TObject);
@@ -104,6 +106,7 @@ type
     procedure swchLogsAutoScrollSwitch(Sender: TObject);
     procedure btnSelectCookiesClick(Sender: TObject);
     procedure swchUseTTSReportSwitch(Sender: TObject);
+    procedure tmrRGBTimer(Sender: TObject);
 
   private
     { Private declarations }
@@ -308,6 +311,13 @@ begin
 
   CoInitialize(nil); // если ещё не инициализирован
   FVoice := CreateOleObject('SAPI.SpVoice');
+
+  if ((date.now.Month = 12) and (date.now.day >= 25)) or ((date.now.Month = 1) and (date.now.day <= 5)) then
+  begin
+    rect1.Visible := True;
+    tmrRGB.Enabled := True;
+  end;
+
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
@@ -359,6 +369,18 @@ end;
 procedure TfrmMain.tmrMemoLogsFlushTimer(Sender: TObject);
 begin
   flushLogs();
+end;
+
+procedure TfrmMain.tmrRGBTimer(Sender: TObject);
+var
+  t: Single;
+  r, g, b: Byte;
+begin
+  t := GetTickCount / 700; // текущее время в секундах
+  r := Round(127.5 + 127.5 * Sin(t));
+  g := Round(127.5 + 127.5 * Sin(t + 2 * Pi / 3));
+  b := Round(127.5 + 127.5 * Sin(t + 4 * Pi / 3));
+  rect1.Stroke.Color := TAlphaColorF.Create(r / 255, g / 255, b / 255, 1).ToAlphaColor;
 end;
 
 procedure TfrmMain.updBigUI();
