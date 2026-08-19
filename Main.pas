@@ -623,7 +623,7 @@ begin
     SpeakText := '<voice required="Name=' + PreferredVoice + '">' + Text + '</voice>';
     FVoice.Speak(SpeakText, 1); // асинхронно, но объект живёт
   except
-    on E: Exception do ShowMessage('Ошибка: ' + E.Message);
+    on E: Exception do log('Ошибка TTS: ' + E.Message);
   end;
 end;
 
