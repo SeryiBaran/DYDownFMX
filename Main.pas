@@ -88,6 +88,9 @@ type
     swchUseTTSReport: TSwitch;
     tmrRGB: TTimer;
     rect1: TRectangle;
+    Layout11: TLayout;
+    swchYTDLPParams: TSwitch;
+    edtYTDLPParams: TEdit;
     procedure btnSettingsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure swchBigUISwitch(Sender: TObject);
@@ -184,6 +187,8 @@ begin
   settings.cookiesFile := Trim(edtCookiesFile.Text);
   settings.logsAutoScroll := swchLogsAutoScroll.IsChecked;
   settings.useTTSReport := swchUseTTSReport.IsChecked;
+  settings.YTDLPParams := Trim(edtYTDLPParams.Text);
+  settings.useYTDLPParams := swchYTDLPParams.IsChecked;
   writeConfigFile();
 end;
 
@@ -201,6 +206,8 @@ begin
   edtCookiesFile.Text := settings.cookiesFile;
   swchLogsAutoScroll.IsChecked := settings.logsAutoScroll;
   swchUseTTSReport.IsChecked := settings.useTTSReport;
+  edtYTDLPParams.Text := settings.YTDLPParams;
+  swchYTDLPParams.IsChecked := settings.useYTDLPParams;
 end;
 
 procedure TfrmMain.btnSettingsClick(Sender: TObject);
@@ -278,6 +285,8 @@ begin
       'PlaylistDirs' + CSV_DELIMITER +
       'UseCookies' + CSV_DELIMITER +
       'CookiesFile' + CSV_DELIMITER +
+      'UseYTDLPParams' + CSV_DELIMITER +
+      'YTDLPParams' + CSV_DELIMITER +
       'Urls' + sLineBreak);
   end;
 
@@ -587,7 +596,7 @@ end;
 procedure TfrmMain.downloadNextYTDLP();
 begin
   currentUrlLaunchString := FILE_YTDLP;
-  currentUrlLaunchString := currentUrlLaunchString + ' --ignore-errors';
+  currentUrlLaunchString := currentUrlLaunchString + ' --newline --ignore-errors';
   // currentUrlLaunchString := currentUrlLaunchString + ' --restrict-filenames';
   if not settings.downloadPlaylist then
     currentUrlLaunchString := currentUrlLaunchString + ' --no-playlist';
@@ -636,6 +645,9 @@ begin
   end;
   if settings.useCookies then
     currentUrlLaunchString := currentUrlLaunchString + ' --cookies "' + settings.cookiesFile + '"';
+  if settings.useYTDLPParams then
+    currentUrlLaunchString := currentUrlLaunchString + ' ' + settings.YTDLPParams + '';
+
 
   currentUrlLaunchString := currentUrlLaunchString + ' "' + normalizedUrls
     [currentUrlProcessingIndex] + '"';
@@ -743,6 +755,8 @@ begin
     EscapeCSV(BoolToStr(settings.createPlaylistDirs, True)) + CSV_DELIMITER +
     EscapeCSV(BoolToStr(settings.useCookies, True)) + CSV_DELIMITER +
     EscapeCSV(settings.cookiesFile) + CSV_DELIMITER +
+    EscapeCSV(BoolToStr(settings.useYTDLPParams, True)) + CSV_DELIMITER +
+    EscapeCSV(settings.YTDLPParams) + CSV_DELIMITER +
     EscapeCSV(urlsConcat);
 
   TFile.AppendAllText(FILE_HISTORY, csvLine + sLineBreak);

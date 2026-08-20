@@ -22647,18 +22647,20 @@ object frmMain: TfrmMain
       object memoUrls: TMemo
         Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
         DataDetectorTypes = []
+        StyledSettings = [Size, Style, FontColor]
+        TextSettings.Font.Family = 'Consolas'
         Align = Client
         Hint = #1055#1086#1083#1077' '#1089' '#1072#1076#1088#1077#1089#1072#1084#1080' '#1074#1080#1076#1077#1086'/'#1087#1083#1077#1081#1083#1080#1089#1090#1086#1074
         Size.Width = 361.000000000000000000
-        Size.Height = 138.000000000000000000
+        Size.Height = 115.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 4
         Viewport.Width = 357.000000000000000000
-        Viewport.Height = 134.000000000000000000
+        Viewport.Height = 111.000000000000000000
       end
       object Layout2: TLayout
         Align = Bottom
-        Position.Y = 245.000000000000000000
+        Position.Y = 222.000000000000000000
         Size.Width = 361.000000000000000000
         Size.Height = 47.000000000000000000
         Size.PlatformDefault = False
@@ -22686,17 +22688,19 @@ object frmMain: TfrmMain
           Align = Bottom
           TabOrder = 7
           ReadOnly = True
+          TextSettings.Font.Family = 'Consolas'
           Position.Y = 25.000000000000000000
           Enabled = False
           Hint = #1042#1099#1073#1088#1072#1085#1085#1072#1103' '#1087#1072#1087#1082#1072' '#1076#1083#1103' '#1079#1072#1075#1088#1091#1079#1086#1082
           Size.Width = 361.000000000000000000
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
+          StyledSettings = [Size, Style, FontColor]
         end
       end
       object Layout3: TLayout
         Align = Bottom
-        Position.Y = 292.000000000000000000
+        Position.Y = 269.000000000000000000
         Size.Width = 361.000000000000000000
         Size.Height = 28.000000000000000000
         Size.PlatformDefault = False
@@ -22738,11 +22742,11 @@ object frmMain: TfrmMain
       end
       object Layout4: TLayout
         Align = Bottom
-        Position.Y = 348.000000000000000000
+        Position.Y = 325.000000000000000000
         Size.Width = 361.000000000000000000
         Size.Height = 46.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 8
+        TabOrder = 9
         object swchAutoPlstFolders: TSwitch
           IsChecked = False
           Position.Y = 24.000000000000000000
@@ -22783,7 +22787,7 @@ object frmMain: TfrmMain
         Size.Width = 361.000000000000000000
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 9
+        TabOrder = 10
         object btnPaste: TButton
           Align = Client
           Size.Width = 281.000000000000000000
@@ -22811,7 +22815,7 @@ object frmMain: TfrmMain
         Size.Width = 361.000000000000000000
         Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 13
+        TabOrder = 14
         object btnCancel: TButton
           Align = Right
           Position.X = 292.000000000000000000
@@ -22887,7 +22891,7 @@ object frmMain: TfrmMain
       end
       object Layout9: TLayout
         Align = Bottom
-        Position.Y = 320.000000000000000000
+        Position.Y = 297.000000000000000000
         Size.Width = 361.000000000000000000
         Size.Height = 28.000000000000000000
         Size.PlatformDefault = False
@@ -22929,11 +22933,11 @@ object frmMain: TfrmMain
       end
       object Layout10: TLayout
         Align = Bottom
-        Position.Y = 394.000000000000000000
+        Position.Y = 371.000000000000000000
         Size.Width = 361.000000000000000000
         Size.Height = 46.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 7
+        TabOrder = 8
         object swchCookies: TSwitch
           IsChecked = False
           Position.Y = 2.000000000000000000
@@ -22966,12 +22970,42 @@ object frmMain: TfrmMain
           Align = Bottom
           TabOrder = 7
           ReadOnly = True
+          TextSettings.Font.Family = 'Consolas'
           Position.Y = 24.000000000000000000
           Enabled = False
           Hint = #1042#1099#1073#1088#1072#1085#1085#1072#1103' '#1087#1072#1087#1082#1072' '#1076#1083#1103' '#1079#1072#1075#1088#1091#1079#1086#1082
           Size.Width = 361.000000000000000000
           Size.Height = 22.000000000000000000
           Size.PlatformDefault = False
+          StyledSettings = [Size, Style, FontColor]
+        end
+      end
+      object Layout11: TLayout
+        Align = Bottom
+        Position.Y = 417.000000000000000000
+        Size.Width = 361.000000000000000000
+        Size.Height = 23.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 7
+        object swchYTDLPParams: TSwitch
+          Align = Left
+          IsChecked = False
+          Size.Width = 44.000000000000000000
+          Size.Height = 23.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 10
+        end
+        object edtYTDLPParams: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = Client
+          TabOrder = 7
+          TextSettings.Font.Family = 'Consolas'
+          Hint = #1042#1099#1073#1088#1072#1085#1085#1072#1103' '#1087#1072#1087#1082#1072' '#1076#1083#1103' '#1079#1072#1075#1088#1091#1079#1086#1082
+          Size.Width = 317.000000000000000000
+          Size.Height = 23.000000000000000000
+          Size.PlatformDefault = False
+          TextPrompt = #1055#1072#1088#1072#1084#1077#1090#1088#1099' yt-dlp'
+          StyledSettings = [Size, Style, FontColor]
         end
       end
     end
@@ -22985,18 +23019,21 @@ object frmMain: TfrmMain
         Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
         DataDetectorTypes = []
         Lines.Strings = (
-          '==================================='
-          '                          '#1053#1086#1074#1086#1077' '#1074' '#1074#1077#1088#1089#1080#1080' 1.4.0!'
+          '============================================'
+          '          '#1053#1086#1074#1086#1077' '#1074' '#1074#1077#1088#1089#1080#1080' 1.4.0!'
           ''
-          '         '#1058#1077#1087#1077#1088#1100' '#1087#1088#1086#1075#1088#1072#1084#1084#1072' '#1084#1086#1078#1077#1090' '#1089#1086#1086#1073#1097#1072#1090#1100' '#1086
-          '         '#1079#1072#1074#1077#1088#1096#1077#1085#1080#1080' '#1089#1082#1072#1095#1080#1074#1072#1085#1080#1103' '#1080' '#1089#1086#1086#1073#1097#1072#1090#1100','
-          '         '#1089#1082#1086#1083#1100#1082#1086' '#1074' '#1087#1088#1086#1094#1077#1089#1089#1077' '#1087#1088#1086#1080#1079#1086#1096#1083#1086' '#1086#1096#1080#1073#1086#1082'.'
+          '     '#1058#1077#1087#1077#1088#1100' '#1087#1088#1086#1075#1088#1072#1084#1084#1072' '#1084#1086#1078#1077#1090' '#1089#1086#1086#1073#1097#1072#1090#1100' '#1086
+          '     '#1079#1072#1074#1077#1088#1096#1077#1085#1080#1080' '#1089#1082#1072#1095#1080#1074#1072#1085#1080#1103' '#1080' '#1089#1086#1086#1073#1097#1072#1090#1100','
+          '    '#1089#1082#1086#1083#1100#1082#1086' '#1074' '#1087#1088#1086#1094#1077#1089#1089#1077' '#1087#1088#1086#1080#1079#1086#1096#1083#1086' '#1086#1096#1080#1073#1086#1082'.'
           ''
-          '       '#1055#1086#1087#1088#1086#1073#1091#1081#1090#1077' '#1087#1077#1088#1077#1082#1083#1102#1095#1072#1090#1077#1083#1100' '#1089#1087#1088#1072#1074#1072' '#1089#1074#1077#1088#1093#1091
-          '                 ("'#1040#1091#1076#1080#1086'-'#1086#1090#1095#1105#1090' '#1087#1086#1089#1083#1077' '#1079#1072#1074#1077#1088#1096'.")'
-          '==================================='
+          '   '#1055#1086#1087#1088#1086#1073#1091#1081#1090#1077' '#1087#1077#1088#1077#1082#1083#1102#1095#1072#1090#1077#1083#1100' '#1089#1087#1088#1072#1074#1072' '#1089#1074#1077#1088#1093#1091
+          '       ("'#1040#1091#1076#1080#1086'-'#1086#1090#1095#1105#1090' '#1087#1086#1089#1083#1077' '#1079#1072#1074#1077#1088#1096'.")'
+          '============================================'
+          ''
           '')
         ReadOnly = True
+        StyledSettings = [Size, Style, FontColor]
+        TextSettings.Font.Family = 'Consolas'
         Align = Client
         Hint = #1055#1086#1083#1077' '#1089' '#1074#1099#1074#1086#1076#1086#1084' yt-dlp'
         Size.Width = 383.000000000000000000

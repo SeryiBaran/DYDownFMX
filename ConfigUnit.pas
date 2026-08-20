@@ -19,6 +19,8 @@ type
     cookiesFile: string;
     logsAutoScroll: Boolean;
     useTTSReport: Boolean;
+    YTDLPParams: string;
+    useYTDLPParams: Boolean;
   end;
 
 procedure SaveSettingsToFile(const Settings: TSettings; const FileName: string);
@@ -28,7 +30,8 @@ const
   defaultSettings: TSettings = (bigUi: True; downloadDir: FILE_DIR;
     videoResolutionIndex: 2; audioBitrateIndex: 1; downloadPlaylist: False; downloadMP3: False;
     downloadLOCALAUDIO: False;
-    createPlaylistDirs: False; useCookies: False; cookiesFile: DEFAULT_COOKIES_FILE; logsAutoScroll: True; useTTSReport: False;);
+    createPlaylistDirs: False; useCookies: False; cookiesFile: DEFAULT_COOKIES_FILE; logsAutoScroll: True; useTTSReport: False;
+    YTDLPParams: ''; useYTDLPParams: False;);
 
 implementation
 
@@ -53,6 +56,8 @@ begin
     Ini.WriteString(SECTION, 'CookiesFile', Settings.cookiesFile);
     Ini.WriteBool(SECTION, 'LogsAutoScroll', Settings.logsAutoScroll);
     Ini.WriteBool(SECTION, 'UseTTSReport', Settings.useTTSReport);
+    Ini.WriteString(SECTION, 'YTDLPParams', Settings.YTDLPParams);
+    Ini.WriteBool(SECTION, 'UseYTDLPParams', Settings.useYTDLPParams);
   finally
     Ini.Free;
   end;
@@ -76,6 +81,8 @@ begin
     Result.cookiesFile := Ini.ReadString(SECTION, 'CookiesFile', defaultSettings.cookiesFile);
     Result.logsAutoScroll := Ini.ReadBool(SECTION, 'LogsAutoScroll', defaultSettings.logsAutoScroll);
     Result.useTTSReport := Ini.ReadBool(SECTION, 'UseTTSReport', defaultSettings.useTTSReport);
+    Result.YTDLPParams := Ini.ReadString(SECTION, 'YTDLPParams', defaultSettings.YTDLPParams);
+    Result.useYTDLPParams := Ini.ReadBool(SECTION, 'UseYTDLPParams', defaultSettings.useYTDLPParams);
   finally
     Ini.Free;
   end;

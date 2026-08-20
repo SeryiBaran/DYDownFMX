@@ -97,3 +97,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - add welcome changelog message
+
+## 1.4.6 - 2026-08-21
+
+### Added
+
+- change font to Consolas
+- yt-dlp parameters passing
