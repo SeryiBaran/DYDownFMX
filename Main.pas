@@ -4,17 +4,50 @@ interface
 
 uses
   // Delphi
-  System.SysUtils, System.Types, System.UITypes, System.Classes,
-  System.Variants, FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics,
-  FMX.Dialogs, FMX.Layouts, FMX.Controls.Presentation, FMX.StdCtrls,
-  FMX.Memo.Types, FMX.ScrollBox, FMX.Memo, FMX.Edit, FMX.ListBox, FMX.Styles,
-  Winapi.Windows, Winapi.Messages, Vcl.Dialogs, System.IOUtils, DateUtils,
-  System.Rtti, FMX.Platform, FMX.Surfaces, FMX.Objects, System.RegularExpressions, System.Generics.Collections,
+  System.SysUtils,
+  System.Types,
+  System.UITypes,
+  System.Classes,
+  System.Variants,
+  FMX.Types,
+  FMX.Controls,
+  FMX.Forms,
+  FMX.Graphics,
+  FMX.Dialogs,
+  FMX.Layouts,
+  FMX.Controls.Presentation,
+  FMX.StdCtrls,
+  FMX.Memo.Types,
+  FMX.ScrollBox,
+  FMX.Memo,
+  FMX.Edit,
+  FMX.ListBox,
+  FMX.Styles,
+  Winapi.Windows,
+  Winapi.Messages,
+  Vcl.Dialogs,
+  System.IOUtils,
+  DateUtils,
+  System.Rtti,
+  FMX.Platform,
+  FMX.Surfaces,
+  FMX.Objects,
+  System.RegularExpressions,
+  System.Generics.Collections,
   // Third-party
-  DosCommand, System.Win.ComObj, Winapi.ActiveX,
+  DosCommand,
+  System.Win.ComObj,
+  Winapi.ActiveX,
   // My
-  ProjectConstants, ConfigUnit, ShellKnownPath, SettingsForm, Utils,
-  System.Math.Vectors, FMX.Controls3D, FMX.Layers3D, FMX.Ani;
+  ProjectConstants,
+  ConfigUnit,
+  ShellKnownPath,
+  SettingsForm,
+  Utils,
+  System.Math.Vectors,
+  FMX.Controls3D,
+  FMX.Layers3D,
+  FMX.Ani;
 
 type
   TYTProgress = record
@@ -100,8 +133,7 @@ type
     procedure btnDownloadClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure dscmndPlaylistNameGetTerminated(Sender: TObject);
-    procedure dscmndYTDLNewLine(ASender: TObject; const ANewLine: string;
-      AOutputType: TOutputType);
+    procedure dscmndYTDLNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
     procedure dscmndYTDLTerminated(Sender: TObject);
     procedure btnClearUrlsClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -131,7 +163,7 @@ type
     procedure flushLogs();
     procedure SpeakText(const Text: string; const PreferredVoice: string = 'Aleksandr-hq');
   public
-    { Public declarations }
+  { Public declarations }
   end;
 
 var
@@ -155,8 +187,7 @@ implementation
 { Helper: экранирование поля для CSV }
 function EscapeCSV(const Value: string): string;
 begin
-  if (Pos(CSV_DELIMITER, Value) > 0) or (Pos('"', Value) > 0) or
-     (Pos(#13, Value) > 0) or (Pos(#10, Value) > 0) then
+  if (Pos(CSV_DELIMITER, Value) > 0) or (Pos('"', Value) > 0) or (Pos(#13, Value) > 0) or (Pos(#10, Value) > 0) then
     Result := '"' + StringReplace(Value, '"', '""', [rfReplaceAll]) + '"'
   else
     Result := Value;
@@ -226,30 +257,29 @@ begin
   FInstanceMutexHandle := 0;
 
   // Перебираем возможные номера, пока не найдём свободный
-  for instancesI := 1 to MAX_INSTANCES do
-  begin
+  for instancesI := 1 to MAX_INSTANCES do begin
     mutexName := BASE_MUTEX_NAME + IntToStr(instancesI);
     FInstanceMutexHandle := CreateMutex(nil, False, PChar(mutexName));
     if FInstanceMutexHandle = 0 then
       RaiseLastOSError;
 
-    if GetLastError = ERROR_ALREADY_EXISTS then
-    begin
+    if GetLastError = ERROR_ALREADY_EXISTS then begin
       CloseHandle(FInstanceMutexHandle);
       FInstanceMutexHandle := 0;
       Continue;
     end
-    else
-    begin
+    else begin
       FInstanceNumber := instancesI;
       Break;
     end;
   end;
 
-  if FInstanceNumber = 0 then
-  begin
-    ShowMessage('Достигнуто максимальное количество запущенных экземпляров (' +
-      IntToStr(MAX_INSTANCES) + ').');
+  if FInstanceNumber = 0 then begin
+    ShowMessage(
+        'Достигнуто максимальное количество запущенных экземпляров ('
+            + IntToStr(MAX_INSTANCES)
+            + ').'
+    );
     Application.Terminate;
     Exit;
   end;
@@ -272,22 +302,36 @@ begin
     CreateDir(FILE_DIR);
 
   // --- СОЗДАНИЕ CSV-ФАЙЛА ИСТОРИИ С ЗАГОЛОВКАМИ (если отсутствует) ---
-  if not FileExists(FILE_HISTORY) then
-  begin
-    TFile.WriteAllText(FILE_HISTORY,
-      'Date' + CSV_DELIMITER +
-      'DownloadDir' + CSV_DELIMITER +
-      'Resolution' + CSV_DELIMITER +
-      'AudioBitrate' + CSV_DELIMITER +
-      'Playlist' + CSV_DELIMITER +
-      'MP3' + CSV_DELIMITER +
-      'Localised' + CSV_DELIMITER +
-      'PlaylistDirs' + CSV_DELIMITER +
-      'UseCookies' + CSV_DELIMITER +
-      'CookiesFile' + CSV_DELIMITER +
-      'UseYTDLPParams' + CSV_DELIMITER +
-      'YTDLPParams' + CSV_DELIMITER +
-      'Urls' + sLineBreak);
+  if not FileExists(FILE_HISTORY) then begin
+    TFile.WriteAllText(
+        FILE_HISTORY,
+        'Date'
+            + CSV_DELIMITER
+            + 'DownloadDir'
+            + CSV_DELIMITER
+            + 'Resolution'
+            + CSV_DELIMITER
+            + 'AudioBitrate'
+            + CSV_DELIMITER
+            + 'Playlist'
+            + CSV_DELIMITER
+            + 'MP3'
+            + CSV_DELIMITER
+            + 'Localised'
+            + CSV_DELIMITER
+            + 'PlaylistDirs'
+            + CSV_DELIMITER
+            + 'UseCookies'
+            + CSV_DELIMITER
+            + 'CookiesFile'
+            + CSV_DELIMITER
+            + 'UseYTDLPParams'
+            + CSV_DELIMITER
+            + 'YTDLPParams'
+            + CSV_DELIMITER
+            + 'Urls'
+            + sLineBreak
+    );
   end;
 
   for i := Low(videoResolutions) to High(videoResolutions) do
@@ -296,14 +340,17 @@ begin
   for i := Low(audioBitrates) to High(audioBitrates) do
     comboBoxAudioBitrate.Items.Add(audioBitrates[i].ToString());
 
-  if FileExists(FILE_CONFIG) then
-  begin
+  if FileExists(FILE_CONFIG) then begin
     try
       readConfigFile();
     except
-      if MessageDlg
-        ('Что-то пошло не так при чтении настроек из файла. Удалить и пересоздать файл настроек?',
-        mtConfirmation, [mbYes, mbNo], 0, mbYes) = mrYes then
+      if MessageDlg(
+              'Что-то пошло не так при чтении настроек из файла. Удалить и пересоздать файл настроек?',
+              mtConfirmation,
+              [mbYes, mbNo],
+              0,
+              mbYes)
+          = mrYes then
       begin
         ShowMessage('yep');
         DeleteFile(FILE_CONFIG);
@@ -311,8 +358,7 @@ begin
       end;
     end;
   end
-  else
-  begin
+  else begin
     writeConfigFile();
   end;
 
@@ -321,8 +367,7 @@ begin
   CoInitialize(nil); // если ещё не инициализирован
   FVoice := CreateOleObject('SAPI.SpVoice');
 
-  if ((date.now.Month = 12) and (date.now.day >= 25)) or ((date.now.Month = 1) and (date.now.day <= 5)) then
-  begin
+  if ((date.now.Month = 12) and (date.now.day >= 25)) or ((date.now.Month = 1) and (date.now.day <= 5)) then begin
     rect1.Visible := True;
     tmrRGB.Enabled := True;
   end;
@@ -344,10 +389,8 @@ begin
   linesFromInput := TArray<string>.Create();
   linesFromInput := urlsString.Split([sLineBreak]);
   clearedLines := TArray<string>.Create();
-  for i := 0 to Length(linesFromInput) - 1 do
-  begin
-    if not(linesFromInput[i].Trim().Length = 0) then
-    begin
+  for i := 0 to Length(linesFromInput) - 1 do begin
+    if not (linesFromInput[i].Trim().Length = 0) then begin
       Insert([linesFromInput[i].Trim()], clearedLines, High(clearedLines) + 1);
     end;
   end;
@@ -356,7 +399,7 @@ end;
 
 function JoinURLs(const urlsString: string): string;
 begin
-  Result := '"' + String.Join('" "', GetNormalizedURLs(urlsString)) + '"';
+  Result := '"' + string.Join('" "', GetNormalizedURLs(urlsString)) + '"';
 end;
 
 procedure TfrmMain.log(message: string);
@@ -368,8 +411,7 @@ procedure TfrmMain.flushLogs();
 begin
   memoLogs.Lines.AddStrings(logsBuffer);
   logsBuffer := [];
-  if settings.logsAutoScroll then
-  begin
+  if settings.logsAutoScroll then begin
     memoLogs.ScrollTo(0, memoLogs.ContentSize.Size.cy);
   end;
 end;
@@ -393,15 +435,13 @@ end;
 
 procedure TfrmMain.updBigUI();
 begin
-  if settings.bigUi then
-  begin
+  if settings.bigUi then begin
     mainLayout.Scale.X := BIG_UI_MUL;
     mainLayout.Scale.Y := BIG_UI_MUL;
     // ScaleForPPI(GetDpiForWindow(Application.Handle) + BIGUI_DPI_ADD);
     frmMain.WindowState := TWindowState.wsMaximized;
   end
-  else
-  begin
+  else begin
     mainLayout.Scale.X := 1;
     mainLayout.Scale.Y := 1;
     // ScaleForCurrentDPI();
@@ -434,14 +474,10 @@ var
   Svc: IFMXClipboardService;
   Value: TValue;
 begin
-  if TPlatformServices.Current.SupportsPlatformService(IFMXClipboardService, Svc)
-  then
-  begin
+  if TPlatformServices.Current.SupportsPlatformService(IFMXClipboardService, Svc) then begin
     Value := Svc.GetClipboard;
-    if not Value.IsEmpty then
-    begin
-      if Value.IsType<string> then
-      begin
+    if not Value.IsEmpty then begin
+      if Value.IsType<string> then begin
         memoUrls.Lines.Add(Value.ToString);
       end
     end;
@@ -459,8 +495,7 @@ begin
     CreateDir(FILE_LOGS_DIR);
 
   logsFileName := Date.Now().ToISO8601(False).Replace(':', '_') + '.txt';
-  TFile.AppendAllText(FILE_LOGS_DIR + '\' + logsFileName,
-    memoLogs.Text + String.Join(sLineBreak, logsBuffer));
+  TFile.AppendAllText(FILE_LOGS_DIR + '\' + logsFileName, memoLogs.Text + string.Join(sLineBreak, logsBuffer));
 end;
 
 procedure TfrmMain.btnSelectCookiesClick(Sender: TObject);
@@ -468,8 +503,7 @@ begin
   with TFileOpenDialog.Create(nil) do
     try
       Options := [];
-      if Execute then
-      begin
+      if Execute then begin
         settings.cookiesFile := FileName;
         edtCookiesFile.Text := settings.cookiesFile;
       end;
@@ -483,8 +517,7 @@ begin
   with TFileOpenDialog.Create(nil) do
     try
       Options := [fdoPickFolders];
-      if Execute then
-      begin
+      if Execute then begin
         settings.downloadDir := FileName;
         edtDownloadDir.Text := settings.downloadDir;
       end;
@@ -497,12 +530,10 @@ procedure TfrmMain.downloadInstanceFinished();
 begin
   log('[INFO] Одна из инстанций yt-dlp завершила работу');
   currentUrlProcessingIndex := currentUrlProcessingIndex + 1;
-  if ((currentUrlProcessingIndex > High(normalizedUrls))) then
-  begin
+  if ((currentUrlProcessingIndex > High(normalizedUrls))) then begin
     downloadFinished();
   end
-  else
-  begin
+  else begin
     if not canceling then
       downloadNext();
   end;
@@ -512,15 +543,13 @@ procedure TfrmMain.updateIndicator();
 begin
   indicator.Visible := True;
 
-  if Length(downloadErrors) > 0 then
-  begin
+  if Length(downloadErrors) > 0 then begin
     indicator.fill.Color := TAlphaColors.Red;
 
     indicator2.Visible := True;
     lblErrorsUrls.Text := Length(errorsUrlsNums).ToString() + ' из ' + Length(normalizedUrls).ToString();
   end
-  else
-  begin
+  else begin
     indicator.fill.Color := TAlphaColors.Green;
   end;
 
@@ -535,40 +564,58 @@ var
 begin
   log(Format('[INFO] СКАЧИВАНИЕ ЗАВЕРШЕНО %s', [Date.Now().ToISO8601(False)]));
 
-  if Length(downloadErrors) > 0 then
-  begin
+  if Length(downloadErrors) > 0 then begin
     log('[ERROR] ВО ВРЕМЯ СКАЧИВАНИЯ ПРОИЗОШЛИ ОШИБКИ:');
 
     R := TRegEx.Create(ERROR_URL_NUMBER_REGEX);
 
-    for i := Low(downloadErrors) to High(downloadErrors) do
-    begin
+    for i := Low(downloadErrors) to High(downloadErrors) do begin
       log(downloadErrors[i]);
 
       if not R.IsMatch(downloadErrors[i]) then
         Continue;
 
       currentErrorURLNumber := R.Match(downloadErrors[i]).Groups.Item[1].Value.ToInteger();
-      if not TArray.Contains(errorsUrlsNums, currentErrorURLNumber) then
-      begin
+      if not TArray.Contains(errorsUrlsNums, currentErrorURLNumber) then begin
         SetLength(errorsUrlsNums, Length(errorsUrlsNums) + 1);
         errorsUrlsNums[High(errorsUrlsNums)] := currentErrorURLNumber;
       end;
 
     end;
 
-    log('[ERROR] АХТУНГ!!! Скачивание завершено с ошибками у ' + Length(errorsUrlsNums).ToString() + ' из ' + Length(normalizedUrls).ToString() + ' адресов');
+    log(
+        '[ERROR] АХТУНГ!!! Скачивание завершено с ошибками у '
+            + Length(errorsUrlsNums).ToString()
+            + ' из '
+            + Length(normalizedUrls).ToString()
+            + ' адресов'
+    );
   end;
 
-  SpeakText('Инстанция ' + FInstanceNumber.ToString + ' работу завершила.' + if Length(downloadErrors) > 0 then ' Количество ошибок: ' + Length(downloadErrors).ToString + '. Проблемных адресов: ' + Length(errorsUrlsNums).ToString() + '. Всего адресов: ' + Length(normalizedUrls).ToString() + '.' else ' Ошибок нет.');
+  SpeakText(
+      'Инстанция '
+          + FInstanceNumber.ToString
+          + ' работу завершила.'
+          + if Length(downloadErrors) > 0 then ' Количество ошибок: '
+          + Length(downloadErrors).ToString
+          + '. Проблемных адресов: '
+          + Length(errorsUrlsNums).ToString()
+          + '. Всего адресов: '
+          + Length(normalizedUrls).ToString()
+          + '.'
+          else ' Ошибок нет.'
+  );
 
-  if Length(downloadErrors) > 50 then
-  begin
-    SpeakText('Произошло более пятидесяти ошибок. Советую проверить обход блокировок и срок годности правящей партии.');
+  if Length(downloadErrors) > 50 then begin
+    SpeakText(
+        'Произошло более пятидесяти ошибок. Советую проверить обход блокировок и срок годности правящей партии.'
+    );
   end;
 
   if ContainsAnySubstring(normalizedUrls, bruhQueries) then
-    SpeakText('Упаси меня господь. Ты где нашел сайт с доменом "эр эф"? Совсем того?');
+    SpeakText(
+        'Упаси меня господь. Ты где нашел сайт с доменом "эр эф"? Совсем того?'
+    );
 
   btnDownload.Enabled := True;
   updateIndicator();
@@ -576,19 +623,25 @@ end;
 
 procedure TfrmMain.downloadNext();
 begin
-  log('[INFO] Началась обработка URL №' + (currentUrlProcessingIndex + 1)
-    .ToString() + ': ' + normalizedUrls[currentUrlProcessingIndex]);
-  if settings.createPlaylistDirs and settings.downloadPlaylist and
-    normalizedUrls[currentUrlProcessingIndex].Contains('list') then
+  log(
+      '[INFO] Началась обработка URL №'
+          + (currentUrlProcessingIndex + 1).ToString()
+          + ': '
+          + normalizedUrls[currentUrlProcessingIndex]
+  );
+  if settings.createPlaylistDirs
+      and settings.downloadPlaylist
+      and normalizedUrls[currentUrlProcessingIndex].Contains('list') then
   begin
     log('[INFO] Получение названия плейлиста...');
-    dscmndPlaylistNameGet.CommandLine := FILE_YTDLP +
-      ' -I 1:1 --skip-download --no-warning --print playlist_title "' +
-      normalizedUrls[currentUrlProcessingIndex] + '"';
+    dscmndPlaylistNameGet.CommandLine :=
+        FILE_YTDLP
+            + ' -I 1:1 --skip-download --no-warning --print playlist_title "'
+            + normalizedUrls[currentUrlProcessingIndex]
+            + '"';
     dscmndPlaylistNameGet.Execute();
   end
-  else
-  begin
+  else begin
     downloadNextYTDLP();
   end;
 end;
@@ -600,57 +653,67 @@ begin
   // currentUrlLaunchString := currentUrlLaunchString + ' --restrict-filenames';
   if not settings.downloadPlaylist then
     currentUrlLaunchString := currentUrlLaunchString + ' --no-playlist';
-  currentUrlLaunchString := currentUrlLaunchString + ' --ffmpeg-location ' +
-    FILE_FFMPEG_DIR;
+  currentUrlLaunchString := currentUrlLaunchString + ' --ffmpeg-location ' + FILE_FFMPEG_DIR;
   currentUrlLaunchString := currentUrlLaunchString + ' --js-runtimes deno:' + FILE_DENO;
-  if settings.createPlaylistDirs and settings.downloadPlaylist and
-    normalizedUrls[currentUrlProcessingIndex].Contains('list') then
+  if settings.createPlaylistDirs
+      and settings.downloadPlaylist
+      and normalizedUrls[currentUrlProcessingIndex].Contains('list') then
   begin
     // Temporary
     // currentUrlPlaylistName := 'playlist' + (currentUrlProcessingIndex + 1).ToString();
 
     CreateDir(settings.downloadDir + '\' + currentUrlPlaylistName);
-    currentUrlLaunchString := currentUrlLaunchString + ' --paths home:' + '"' +
-      StringReplace(settings.downloadDir, '\', '\\', [rfReplaceAll]) + '\\' +
-      currentUrlPlaylistName + '"';
+    currentUrlLaunchString :=
+        currentUrlLaunchString
+            + ' --paths home:'
+            + '"'
+            + StringReplace(settings.downloadDir, '\', '\\', [rfReplaceAll])
+            + '\\'
+            + currentUrlPlaylistName
+            + '"';
   end
-  else
-  begin
-    currentUrlLaunchString := currentUrlLaunchString + ' --paths home:' + '"' +
-      StringReplace(settings.downloadDir, '\', '\\', [rfReplaceAll]) + '"';
+  else begin
+    currentUrlLaunchString :=
+        currentUrlLaunchString
+            + ' --paths home:'
+            + '"'
+            + StringReplace(settings.downloadDir, '\', '\\', [rfReplaceAll])
+            + '"';
   end;
-  currentUrlLaunchString := currentUrlLaunchString +
-    ' --replace-in-metadata "title" "[\/\\\:\*\"\?\<\>\|\`'']" "_"';
-  currentUrlLaunchString := currentUrlLaunchString + ' -S "res:' +
-    videoResolutions[settings.videoResolutionIndex].ToString() +
-    ',ext:mp4:m4a,vcodec:h264"';
+  currentUrlLaunchString := currentUrlLaunchString + ' --replace-in-metadata "title" "[\/\\\:\*\"\?\<\>\|\`'']" "_"';
+  currentUrlLaunchString :=
+      currentUrlLaunchString
+          + ' -S "res:'
+          + videoResolutions[settings.videoResolutionIndex].ToString()
+          + ',ext:mp4:m4a,vcodec:h264"';
   if settings.downloadLOCALAUDIO then
-    currentUrlLaunchString := currentUrlLaunchString + ' --extractor-args "youtube:player-client=android,tv_downgraded" -f "bestvideo+bestaudio[language='+DEFAULT_LOCALE+']/bestvideo+bestaudio" ';
-  if settings.downloadMP3 then
-  begin
+    currentUrlLaunchString :=
+        currentUrlLaunchString
+            + ' --extractor-args "youtube:player-client=android,tv_downgraded" -f "bestvideo+bestaudio[language='
+            + DEFAULT_LOCALE
+            + ']/bestvideo+bestaudio" ';
+  if settings.downloadMP3 then begin
     currentUrlLaunchString := currentUrlLaunchString + ' -f "bestaudio';
     if settings.downloadLOCALAUDIO then
-      currentUrlLaunchString := currentUrlLaunchString + '[language^='+DEFAULT_LOCALE+']';
-    currentUrlLaunchString := currentUrlLaunchString + '/bestaudio" -x --audio-format mp3 --audio-quality ' + audioBitrates[settings.audioBitrateIndex].ToString() + '';
+      currentUrlLaunchString := currentUrlLaunchString + '[language^=' + DEFAULT_LOCALE + ']';
+    currentUrlLaunchString :=
+        currentUrlLaunchString
+            + '/bestaudio" -x --audio-format mp3 --audio-quality '
+            + audioBitrates[settings.audioBitrateIndex].ToString()
+            + '';
   end;
-  if settings.downloadPlaylist then
-  begin
-    currentUrlLaunchString := currentUrlLaunchString +
-      ' -o "%(playlist_index&[{}] |)s%(title).80s [%(id)s].%(ext)s"';
+  if settings.downloadPlaylist then begin
+    currentUrlLaunchString := currentUrlLaunchString + ' -o "%(playlist_index&[{}] |)s%(title).80s [%(id)s].%(ext)s"';
   end
-  else
-  begin
-    currentUrlLaunchString := currentUrlLaunchString +
-      ' -o "%(title).120s [%(id)s].%(ext)s"';
+  else begin
+    currentUrlLaunchString := currentUrlLaunchString + ' -o "%(title).120s [%(id)s].%(ext)s"';
   end;
   if settings.useCookies then
     currentUrlLaunchString := currentUrlLaunchString + ' --cookies "' + settings.cookiesFile + '"';
   if settings.useYTDLPParams then
     currentUrlLaunchString := currentUrlLaunchString + ' ' + settings.YTDLPParams + '';
 
-
-  currentUrlLaunchString := currentUrlLaunchString + ' "' + normalizedUrls
-    [currentUrlProcessingIndex] + '"';
+  currentUrlLaunchString := currentUrlLaunchString + ' "' + normalizedUrls[currentUrlProcessingIndex] + '"';
 
   log('EXEC: ' + currentUrlLaunchString);
   dscmndYTDL.CommandLine := currentUrlLaunchString;
@@ -671,13 +734,13 @@ procedure TfrmMain.SpeakText(const Text: string; const PreferredVoice: string = 
 var
   SpeakText: string;
 begin
-  if settings.useTTSReport then
-  begin
+  if settings.useTTSReport then begin
     try
       SpeakText := '<voice required="Name=' + PreferredVoice + '">' + Text + '</voice>';
       FVoice.Speak(SpeakText, 1 + $08); // асинхронно, но объект живёт
     except
-      on E: Exception do log('[ERR]: TTS: ' + E.Message);
+      on E: Exception do
+        log('[ERR]: TTS: ' + E.Message);
     end;
   end;
 end;
@@ -696,41 +759,45 @@ begin
 
   updateSettingsFromForm();
 
-  if memoUrls.Lines.Text.Trim().IsEmpty() then
-  begin
+  if memoUrls.Lines.Text.Trim().IsEmpty() then begin
     log('[ERR] ВВЕДИТЕ АДРЕС(А)!');
     Exit;
   end;
 
-  if not TDirectory.Exists(FILE_DIR) then
-  begin
+  if not TDirectory.Exists(FILE_DIR) then begin
     log('Не найдена папка ' + FILE_DIR + ', создание...');
     TDirectory.CreateDirectory(FILE_DIR);
   end;
 
-  if not TFile.Exists(FILE_YTDLP) then
-  begin
-    log('[ERR] Не найден yt-dlp.exe! Откройте меню настройки или вручную скачайте в '
-      + FILE_YTDLP);
+  if not TFile.Exists(FILE_YTDLP) then begin
+    log(
+        '[ERR] Не найден yt-dlp.exe! Откройте меню настройки или вручную скачайте в '
+            + FILE_YTDLP
+    );
     Exit;
   end;
 
-  if not TDirectory.Exists(FFMPEG_DIR) then
-  begin
-    log('[ERR] Не найден ffmpeg! Откройте меню настройки или вручную скачайте и распакуйте в '
-      + FFMPEG_DIR);
+  if not TDirectory.Exists(FFMPEG_DIR) then begin
+    log(
+        '[ERR] Не найден ffmpeg! Откройте меню настройки или вручную скачайте и распакуйте в '
+            + FFMPEG_DIR
+    );
     Exit;
   end;
 
-  if not TFile.Exists(FILE_DENO) then
-  begin
-    log('[ERR] Не найден deno.exe! Откройте меню настройки или вручную скачайте в '
-      + FILE_DENO);
-    ShowMessage('Не найден DENO. Откройте меню настройки для скачивания, или скачайте вручную в '+ FILE_DENO + '. Без DENO трудно добиться стабильного скачивания из-за JS-задач от Youtube, решением которых DENO и занимается. После закрытия этого окна скачивание продолжится, но всё же, советую скачать DENO.');
+  if not TFile.Exists(FILE_DENO) then begin
+    log(
+        '[ERR] Не найден deno.exe! Откройте меню настройки или вручную скачайте в '
+            + FILE_DENO
+    );
+    ShowMessage(
+        'Не найден DENO. Откройте меню настройки для скачивания, или скачайте вручную в '
+            + FILE_DENO
+            + '. Без DENO трудно добиться стабильного скачивания из-за JS-задач от Youtube, решением которых DENO и занимается. После закрытия этого окна скачивание продолжится, но всё же, советую скачать DENO.'
+    );
   end;
 
-  if settings.useCookies and not TFile.Exists(settings.cookiesFile) then
-  begin
+  if settings.useCookies and not TFile.Exists(settings.cookiesFile) then begin
     log('[ERROR] ВЫБРАННЫЙ ФАЙЛ С КУКАМИ НЕ НАЙДЕН!');
     Exit;
   end;
@@ -743,21 +810,33 @@ begin
   normalizedUrls := GetNormalizedURLs(memoUrls.Text);
 
   // --- ЗАПИСЬ ИСТОРИИ В CSV (вместо старого текстового формата) ---
-  urlsConcat := String.Join('|', normalizedUrls);
+  urlsConcat := string.Join('|', normalizedUrls);
   csvLine :=
-    EscapeCSV(FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now)) + CSV_DELIMITER +
-    EscapeCSV(settings.downloadDir) + CSV_DELIMITER +
-    EscapeCSV(videoResolutions[settings.videoResolutionIndex].ToString()) + CSV_DELIMITER +
-    EscapeCSV(audioBitrates[settings.audioBitrateIndex].ToString()) + CSV_DELIMITER +
-    EscapeCSV(BoolToStr(settings.downloadPlaylist, True)) + CSV_DELIMITER +
-    EscapeCSV(BoolToStr(settings.downloadMP3, True)) + CSV_DELIMITER +
-    EscapeCSV(BoolToStr(settings.downloadLOCALAUDIO, True)) + CSV_DELIMITER +
-    EscapeCSV(BoolToStr(settings.createPlaylistDirs, True)) + CSV_DELIMITER +
-    EscapeCSV(BoolToStr(settings.useCookies, True)) + CSV_DELIMITER +
-    EscapeCSV(settings.cookiesFile) + CSV_DELIMITER +
-    EscapeCSV(BoolToStr(settings.useYTDLPParams, True)) + CSV_DELIMITER +
-    EscapeCSV(settings.YTDLPParams) + CSV_DELIMITER +
-    EscapeCSV(urlsConcat);
+      EscapeCSV(FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now))
+          + CSV_DELIMITER
+          + EscapeCSV(settings.downloadDir)
+          + CSV_DELIMITER
+          + EscapeCSV(videoResolutions[settings.videoResolutionIndex].ToString())
+          + CSV_DELIMITER
+          + EscapeCSV(audioBitrates[settings.audioBitrateIndex].ToString())
+          + CSV_DELIMITER
+          + EscapeCSV(BoolToStr(settings.downloadPlaylist, True))
+          + CSV_DELIMITER
+          + EscapeCSV(BoolToStr(settings.downloadMP3, True))
+          + CSV_DELIMITER
+          + EscapeCSV(BoolToStr(settings.downloadLOCALAUDIO, True))
+          + CSV_DELIMITER
+          + EscapeCSV(BoolToStr(settings.createPlaylistDirs, True))
+          + CSV_DELIMITER
+          + EscapeCSV(BoolToStr(settings.useCookies, True))
+          + CSV_DELIMITER
+          + EscapeCSV(settings.cookiesFile)
+          + CSV_DELIMITER
+          + EscapeCSV(BoolToStr(settings.useYTDLPParams, True))
+          + CSV_DELIMITER
+          + EscapeCSV(settings.YTDLPParams)
+          + CSV_DELIMITER
+          + EscapeCSV(urlsConcat);
 
   TFile.AppendAllText(FILE_HISTORY, csvLine + sLineBreak);
 
@@ -780,13 +859,10 @@ begin
   downloadNextYTDLP();
 end;
 
-procedure TfrmMain.dscmndYTDLNewLine(ASender: TObject; const ANewLine: string;
-  AOutputType: TOutputType);
+procedure TfrmMain.dscmndYTDLNewLine(ASender: TObject; const ANewLine: string; AOutputType: TOutputType);
 begin
   log(ANewLine);
-  if ANewLine.Contains('err') or ANewLine.Contains('Err') or
-    ANewLine.Contains('ERR') then
-  begin
+  if ANewLine.Contains('err') or ANewLine.Contains('Err') or ANewLine.Contains('ERR') then begin
     SetLength(downloadErrors, Length(downloadErrors) + 1);
     downloadErrors[High(downloadErrors)] := '#URL::' + (currentUrlProcessingIndex + 1).ToString() + '::' + ANewLine;
   end;
@@ -798,4 +874,3 @@ begin
 end;
 
 end.
-

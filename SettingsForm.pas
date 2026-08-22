@@ -4,14 +4,31 @@ interface
 
 uses
   // Delphi
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Types,
-  System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
-  FMX.Controls.Presentation, FMX.StdCtrls, FMX.Layouts, FMX.Objects,
-  Winapi.WinInet, System.Zip, ShellAPI, FMX.Platform.Win, System.IOUtils,
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Types,
+  System.UITypes,
+  System.Classes,
+  System.Variants,
+  FMX.Types,
+  FMX.Controls,
+  FMX.Forms,
+  FMX.Graphics,
+  FMX.Dialogs,
+  FMX.Controls.Presentation,
+  FMX.StdCtrls,
+  FMX.Layouts,
+  FMX.Objects,
+  Winapi.WinInet,
+  System.Zip,
+  ShellAPI,
+  FMX.Platform.Win,
+  System.IOUtils,
   // Third-party
   // My
-  ProjectConstants, fOpen;
+  ProjectConstants,
+  fOpen;
 
 type
   TfrmSettings = class(TForm)
@@ -33,9 +50,9 @@ type
     procedure btnGetDENOClick(Sender: TObject);
     procedure btnGetTTSClick(Sender: TObject);
   private
-    { Private declarations }
+  { Private declarations }
   public
-    { Public declarations }
+  { Public declarations }
   end;
 
 implementation
@@ -51,13 +68,12 @@ begin
   FillChar(sei, SizeOf(sei), 0);
   sei.cbSize := SizeOf(sei);
   sei.fMask := SEE_MASK_NOCLOSEPROCESS or SEE_MASK_FLAG_DDEWAIT;
-  sei.lpVerb := 'runas';  // Запрос прав администратора
+  sei.lpVerb := 'runas'; // Запрос прав администратора
   sei.lpFile := PChar(aFile);
   sei.lpParameters := PChar(aParams);
-  sei.nShow := SW_HIDE;   // Скрываем окно
+  sei.nShow := SW_HIDE; // Скрываем окно
 
-  if ShellExecuteEx(@sei) then
-  begin
+  if ShellExecuteEx(@sei) then begin
     // Ожидаем завершения установки
     WaitForSingleObject(sei.hProcess, INFINITE);
 
@@ -80,17 +96,20 @@ var
 begin
   Result := False;
   hSession := InternetOpen('Mozilla/5.0', INTERNET_OPEN_TYPE_PRECONFIG, nil, nil, 0);
-  if hSession = nil then Exit;
+  if hSession = nil then
+    Exit;
   try
     hURL := InternetOpenURL(hSession, PChar(URL), nil, 0, 0, 0);
-    if hURL = nil then Exit;
+    if hURL = nil then
+      Exit;
     try
       FS := TFileStream.Create(FileName, fmCreate);
       try
         SetLength(Buffer, BufferSize);
         repeat
           InternetReadFile(hURL, @Buffer[0], BufferSize, BytesRead);
-          if BytesRead = 0 then Break;
+          if BytesRead = 0 then
+            Break;
           FS.WriteBuffer(Buffer[0], BytesRead);
         until False;
         Result := True;
@@ -116,8 +135,7 @@ begin
   if FileExists(FILE_DENO_DOWNLOADED) then
     DeleteFile(FILE_DENO_DOWNLOADED);
 
-  if not DownloadFile(LATEST_DENO_DOWNLOAD_URL, FILE_DENO_DOWNLOADED) then
-  begin
+  if not DownloadFile(LATEST_DENO_DOWNLOAD_URL, FILE_DENO_DOWNLOADED) then begin
     btnGetDENO.Text := 'DENO - ОШИБКА ЗАГРУЗКИ';
     Exit;
   end;
@@ -152,8 +170,7 @@ begin
   if FileExists(FILE_FFMPEG_DOWNLOADED) then
     DeleteFile(FILE_FFMPEG_DOWNLOADED);
 
-  if not DownloadFile(LATEST_FFMPEG_DOWNLOAD_URL, FILE_FFMPEG_DOWNLOADED) then
-  begin
+  if not DownloadFile(LATEST_FFMPEG_DOWNLOAD_URL, FILE_FFMPEG_DOWNLOADED) then begin
     btnGetFFMPEG.Text := 'FFMPEG - ОШИБКА ЗАГРУЗКИ';
     Exit;
   end;
@@ -161,15 +178,17 @@ begin
   Zip := TZipFile.Create;
   try
     Zip.Open(FILE_FFMPEG_DOWNLOADED, zmRead);
-    for i := 0 to Zip.FileCount - 1 do
-    begin
+    for i := 0 to Zip.FileCount - 1 do begin
       EntryName := Zip.FileNames[i];
-      if EntryName.EndsWith('/') then Continue; // пропускаем папки
+      if EntryName.EndsWith('/') then
+        Continue; // пропускаем папки
 
       var p := Pos('/', EntryName);
-      if p = 0 then Continue; // нет корневой папки – такого быть не должно
+      if p = 0 then
+        Continue; // нет корневой папки – такого быть не должно
       RelPath := Copy(EntryName, p + 1, MaxInt);
-      if RelPath = '' then Continue;
+      if RelPath = '' then
+        Continue;
 
       // Определяем папку назначения (без имени файла)
       FolderPart := TPath.GetDirectoryName(RelPath);
@@ -188,7 +207,7 @@ begin
     Zip.Free;
   end;
 
-  //DeleteFile(FILE_FFMPEG_DOWNLOADED);
+  // DeleteFile(FILE_FFMPEG_DOWNLOADED);
   btnGetFFMPEG.Text := 'FFMPEG - вроде завершено';
 end;
 
@@ -202,21 +221,20 @@ begin
   if not DirectoryExists(FILE_DIR) then
     CreateDir(FILE_DIR);
 
-  //if FileExists(FILE_TTS_ZIP) then
+  // if FileExists(FILE_TTS_ZIP) then
   //  DeleteFile(FILE_TTS_ZIP);
 
   if FileExists(FILE_TTS_INST) then
     DeleteFile(FILE_TTS_INST);
 
-  //if not DownloadFile(LATEST_TTS_DOWNLOAD_URL, FILE_TTS_ZIP) then
-  if not DownloadFile(LATEST_TTS_DOWNLOAD_URL, FILE_TTS_INST) then
-  begin
+  // if not DownloadFile(LATEST_TTS_DOWNLOAD_URL, FILE_TTS_ZIP) then
+  if not DownloadFile(LATEST_TTS_DOWNLOAD_URL, FILE_TTS_INST) then begin
     btnGetTTS.Text := 'TTS - ОШИБКА ЗАГРУЗКИ';
     Exit;
   end;
 
-  //Zip := TZipFile.Create;
-  //try
+  // Zip := TZipFile.Create;
+  // try
   //  Zip.Open(FILE_TTS_ZIP, zmRead);
   //
   //  if Zip.FileCount > 0 then
@@ -229,9 +247,9 @@ begin
   //    raise Exception.Create('Архив пуст или не содержит файлов');
   //
   //  Zip.Close;
-  //finally
+  // finally
   //  Zip.Free;
-  //end;
+  // end;
 
   InstallerPath := FILE_TTS_INST;
   InstallParams := '/S';
@@ -249,12 +267,10 @@ begin
   if FileExists(FILE_YTDLP) then
     DeleteFile(FILE_YTDLP);
 
-  if DownloadFile(LATEST_YTDLP_DOWNLOAD_URL, FILE_YTDLP) then
-  begin
+  if DownloadFile(LATEST_YTDLP_DOWNLOAD_URL, FILE_YTDLP) then begin
     btnGetYTDLP.Text := 'YT-DLP - вроде завершено';
   end
-  else
-  begin
+  else begin
     btnGetYTDLP.Text := 'YT-DLP - ОШИБКА ЗАГРУЗКИ';
   end;
 end;

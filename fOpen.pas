@@ -5,10 +5,11 @@ interface
 uses
   FMX.Dialogs,
 {$IFDEF MSWINDOWS}
-  Winapi.ShellAPI, Winapi.Windows;
+  Winapi.ShellAPI,
+  Winapi.Windows;
 {$ENDIF MSWINDOWS}
 {$IFDEF POSIX}
-  Posix.Stdlib;
+Posix.Stdlib;
 {$ENDIF POSIX}
 
 type

@@ -3,7 +3,9 @@ unit ConfigUnit;
 interface
 
 uses
-  System.SysUtils, System.IniFiles, ProjectConstants;
+  System.SysUtils,
+  System.IniFiles,
+  ProjectConstants;
 
 type
   TSettings = record
@@ -27,11 +29,22 @@ procedure SaveSettingsToFile(const Settings: TSettings; const FileName: string);
 function LoadSettingsFromFile(const FileName: string): TSettings;
 
 const
-  defaultSettings: TSettings = (bigUi: True; downloadDir: FILE_DIR;
-    videoResolutionIndex: 2; audioBitrateIndex: 1; downloadPlaylist: False; downloadMP3: False;
-    downloadLOCALAUDIO: False;
-    createPlaylistDirs: False; useCookies: False; cookiesFile: DEFAULT_COOKIES_FILE; logsAutoScroll: True; useTTSReport: False;
-    YTDLPParams: ''; useYTDLPParams: False;);
+  defaultSettings: TSettings = (
+      bigUi: True;
+      downloadDir: FILE_DIR;
+      videoResolutionIndex: 2;
+      audioBitrateIndex: 1;
+      downloadPlaylist: False;
+      downloadMP3: False;
+      downloadLOCALAUDIO: False;
+      createPlaylistDirs: False;
+      useCookies: False;
+      cookiesFile: DEFAULT_COOKIES_FILE;
+      logsAutoScroll: True;
+      useTTSReport: False;
+      YTDLPParams: '';
+      useYTDLPParams: False;
+  );
 
 implementation
 
@@ -71,7 +84,8 @@ begin
   try
     Result.bigUi := Ini.ReadBool(SECTION, 'BigUi', defaultSettings.bigUi);
     Result.downloadDir := Ini.ReadString(SECTION, 'DownloadDir', defaultSettings.downloadDir);
-    Result.videoResolutionIndex := Ini.ReadInteger(SECTION, 'VideoResolutionIndex', defaultSettings.videoResolutionIndex);
+    Result.videoResolutionIndex :=
+        Ini.ReadInteger(SECTION, 'VideoResolutionIndex', defaultSettings.videoResolutionIndex);
     Result.audioBitrateIndex := Ini.ReadInteger(SECTION, 'AudioBitrateIndex', defaultSettings.audioBitrateIndex);
     Result.downloadPlaylist := Ini.ReadBool(SECTION, 'DownloadPlaylist', defaultSettings.downloadPlaylist);
     Result.downloadMP3 := Ini.ReadBool(SECTION, 'DownloadMP3', defaultSettings.downloadMP3);
